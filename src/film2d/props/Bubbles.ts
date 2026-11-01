@@ -22,8 +22,18 @@ export interface Bubble {
   screen?: Pt;
 }
 
+/** Screen margins (px) bubbles are kept inside, e.g. a Reels safe zone. */
+export interface SafeMargins {
+  left: number;
+  top: number;
+  right: number;
+  bottom: number;
+}
+
 export class Bubbles {
   list: Bubble[] = [];
+  /** Bubbles are clamped inside these margins (default: 24 px all round). */
+  safe: SafeMargins = { left: 24, top: 24, right: 24, bottom: 24 };
 
   add(b: Bubble): void {
     this.list.push(b);
@@ -47,8 +57,9 @@ export class Bubbles {
       const pop = t - b.t0 < 1 / 12 ? 1.08 : 1;
       let cx = b.screen ? b.screen[0] * FILM.width : a.x + (b.dx ?? 0);
       let cy = b.screen ? b.screen[1] * FILM.height : a.y + (b.dy ?? -h / 2 - 50);
-      cx = Math.min(FILM.width - w / 2 - 24, Math.max(w / 2 + 24, cx));
-      cy = Math.min(FILM.height - h / 2 - 24, Math.max(h / 2 + 24, cy));
+      const m = this.safe;
+      cx = Math.min(FILM.width - w / 2 - m.right, Math.max(w / 2 + m.left, cx));
+      cy = Math.min(FILM.height - h / 2 - m.bottom, Math.max(h / 2 + m.top, cy));
 
       c.save();
       c.translate(cx, cy);

@@ -1,0 +1,16 @@
+{
+  "_comment": "Vietnamese dub for Trốn tìm (ElevenLabs eleven_v4). Vịt: Yuna (aHC3XZOMg3HZuXVYK6hy), Táo: Quốc Việt (INVEBXRYITvag1Ed3nVO). Mix: node scripts/mix-dub.mjs in.mp4 docs/episodes/tron-tim.dub.json out.mp4",
+  "voiceGainDb": 3,
+  "loudnessLufs": -14,
+  "lines": [
+    { "t": 0.15, "who": "vit", "text": "Tám... chín... mười!", "file": "assets/voice/tron-tim/01.mp3" },
+    { "t": 2.75, "who": "vit", "text": "Tớ đi tìm đây!", "file": "assets/voice/tron-tim/02.mp3" },
+    { "t": 5.1, "who": "vit", "text": "Hừm. Không có.", "file": "assets/voice/tron-tim/03.mp3" },
+    { "t": 8.15, "who": "vit", "text": "A ha! Trên cây!", "file": "assets/voice/tron-tim/04.mp3" },
+    { "t": 10.35, "who": "vit", "text": "Ơ... quả nào nhỉ?", "file": "assets/voice/tron-tim/05.mp3" },
+    { "t": 12.5, "who": "vit", "text": "Rung cây là biết ngay!", "file": "assets/voice/tron-tim/06.mp3" },
+    { "t": 16.45, "who": "vit", "text": "Ui! Ui da! Ui!", "file": "assets/voice/tron-tim/07.mp3" },
+    { "t": 18.95, "who": "vit", "text": "Sao... cậu không rơi?", "file": "assets/voice/tron-tim/08.mp3" },
+    { "t": 21.95, "who": "tao", "gainDb": 3, "text": "Tớ có tay.", "file": "assets/voice/tron-tim/09.mp3" }
+  ]
+}

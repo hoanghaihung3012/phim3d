@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { FILM } from '../config/film';
 
 /**
- * The 2D film is drawn with Canvas 2D into a fixed 1920x1080 canvas, which is shown on a
+ * The 2D film is drawn with Canvas 2D into a fixed canvas of FILM size (1920x1080, or 1080x1920 for vertical clips), which is shown on a
  * full-frame Three.js plane (CanvasTexture). Keeping Three.js as the presenter means 3D
  * elements or shader effects can be layered in later, and the Recorder captures the
  * WebGL canvas exactly like the 3D version did.
@@ -19,6 +19,7 @@ export class Stage2D {
     this.renderer = new THREE.WebGLRenderer({ antialias: false, preserveDrawingBuffer: true });
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     container.appendChild(this.renderer.domElement);
+    this.renderer.domElement.style.aspectRatio = `${FILM.width} / ${FILM.height}`;
 
     this.film = document.createElement('canvas');
     this.film.width = FILM.width;
@@ -44,7 +45,8 @@ export class Stage2D {
 
   setPreviewSize(): void {
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    this.renderer.setSize(1280, 720, false);
+    // Two thirds of the film size (1280x720 for 16:9, 720x1280 for 9:16).
+    this.renderer.setSize((FILM.width * 2) / 3, (FILM.height * 2) / 3, false);
   }
 
   setExportSize(): void {

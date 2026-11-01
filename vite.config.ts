@@ -18,6 +18,7 @@ export default defineConfig({
             'anh-gia-dinh': 'anh-gia-dinh.html', // episode: Ảnh gia đình
             'anh-gia-dinh-net': 'anh-gia-dinh-net.html', // same episode, minimal thin-line look
             'tha-dieu': 'tha-dieu.html', // episode: Thả diều (comic-strip look)
+            'tron-tim': 'tron-tim.html', // episode: Trốn tìm (vertical 9:16, for Reels)
             film3d: 'film3d.html', // earlier 3D version
             'apple-test': 'apple-test.html', // character test reel for Táo Lém
             'apple-2d': 'experiments/apple-2d/index.html', // 2D hand-drawn style test

@@ -63,12 +63,16 @@ export class Apple2D {
   lookY = 0;
   blush = 1;
   blink = 1;
+  /** 0 = no face (seen from behind, or an ordinary apple). */
+  face = 1;
   // Body parts
   leaf = 0;
   flap = 0;
   stem = 0;
   armL = 0.25;
   armR = 0.25;
+  /** Extra length of the right arm (noodle arm stretching up to grab a branch). */
+  reachR = 0;
   arms = 1;
   legs = 0;
   run = 0;
@@ -129,7 +133,7 @@ export class Apple2D {
     this.drawStem(sk);
     this.drawBody(sk);
     this.drawLeaf(sk, t);
-    this.drawFace(sk, t);
+    if (this.face > 0.5) this.drawFace(sk, t);
     this.drawFx(sk, t);
     c.restore();
   }
@@ -158,13 +162,12 @@ export class Apple2D {
   }
 
   private drawArms(sk: Sketch, t: number): void {
-    const arms: [number, number, number][] = [
-      [-1, this.armL + 0.05 * Math.sin(t * 1.7), ID.armL],
-      [1, this.armR + 0.05 * Math.sin(t * 1.7 + 1), ID.armR],
+    const arms: [number, number, number, number][] = [
+      [-1, this.armL + 0.05 * Math.sin(t * 1.7), ID.armL, 82],
+      [1, this.armR + 0.05 * Math.sin(t * 1.7 + 1), ID.armR, 82 + this.reachR],
     ];
-    for (const [side, ang, id] of arms) {
+    for (const [side, ang, id, len] of arms) {
       const sh: Pt = [side * R * 0.88, -R * 0.62];
-      const len = 82;
       const hand: Pt = [sh[0] + side * Math.sin(ang) * len, sh[1] + Math.cos(ang) * len];
       const mid: Pt = [(sh[0] + hand[0]) / 2 + side * 10, (sh[1] + hand[1]) / 2 + 6];
       sk.tube(quad(sh, mid, hand, 6), id, 22, COLORS.apple, 1);

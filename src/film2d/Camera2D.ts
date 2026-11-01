@@ -1,6 +1,6 @@
 import { FILM } from '../config/film';
 
-/** 2D camera: looks at (x, y) in world units; zoom 1 shows 1920x1080 world units. */
+/** 2D camera: looks at (x, y) in world units; zoom 1 shows FILM.width x FILM.height world units. */
 export class Camera2D {
   x = 0;
   y = -400;

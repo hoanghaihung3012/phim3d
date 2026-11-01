@@ -1,11 +1,12 @@
 // Mixes recorded dialogue (a dub) onto an exported MP4.
 //   node scripts/mix-dub.mjs <in.mp4> <dub.json> <out.mp4>
-// dub.json: { "voiceGainDb": 4, "lines": [{ "t": 5.0, "file": "assets/voice/x/01.mp3", "skip": 1.2?, "gainDb": 0? }] }
+// dub.json: { "voiceGainDb": 4, "loudnessLufs": -18?, "lines": [{ "t": 5.0, "file": "assets/voice/x/01.mp3", "skip": 1.2?, "gainDb": 0? }] }
 //   t:    start time in the film (seconds)
 //   skip: optional seconds to drop after the leading silence (e.g. a take where the TTS
 //         read the style tag aloud before the line), then silence is trimmed again
 // The film's own track (music, sfx; export it with --query nobabble) is ducked a little
-// under each line, then the whole mix is loudness-normalised (EBU R128, -18 LUFS).
+// under each line, then the whole mix is loudness-normalised (EBU R128, default -18 LUFS;
+// use -14 for Reels/TikTok, which play louder).
 import { spawnSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 
@@ -13,6 +14,7 @@ const [input, dubPath, out] = process.argv.slice(2);
 if (!out) throw new Error('Usage: node scripts/mix-dub.mjs <in.mp4> <dub.json> <out.mp4>');
 const dub = JSON.parse(readFileSync(dubPath, 'utf8'));
 const baseGain = dub.voiceGainDb ?? 0;
+const lufs = dub.loudnessLufs ?? -18;
 
 const args = ['-y', '-loglevel', 'error', '-i', input];
 const chains = [];
@@ -33,7 +35,7 @@ const filter = [
   `${voices}amix=inputs=${n}:normalize=0:dropout_transition=0,asplit[vox][key]`,
   `[0:a]aresample=48000[bed]`,
   `[bed][key]sidechaincompress=threshold=0.05:ratio=4:attack=20:release=300[ducked]`,
-  `[ducked][vox]amix=inputs=2:normalize=0:duration=first,loudnorm=I=-18:TP=-1.5:LRA=11,aresample=48000[a]`,
+  `[ducked][vox]amix=inputs=2:normalize=0:duration=first,loudnorm=I=${lufs}:TP=-1.5:LRA=11,aresample=48000[a]`,
 ].join(';');
 args.push('-filter_complex', filter, '-map', '0:v', '-map', '[a]', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', '-movflags', '+faststart', out);
 const r = spawnSync('ffmpeg', args, { stdio: 'inherit' });
