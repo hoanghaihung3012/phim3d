@@ -1,0 +1,20 @@
+{
+  "_comment": "Vietnamese dub for Thả diều (ElevenLabs eleven_v4). Vịt: Yuna (aHC3XZOMg3HZuXVYK6hy), Táo: Quốc Việt (INVEBXRYITvag1Ed3nVO). Mix: node scripts/mix-dub.mjs in.mp4 docs/episodes/tha-dieu.dub.json out.mp4",
+  "voiceGainDb": 3,
+  "lines": [
+    { "t": 5.05, "who": "vit", "text": "Diều của tớ to nhất xóm!", "file": "assets/voice/tha-dieu/01.mp3" },
+    { "t": 7.65, "who": "tao", "text": "Ờ.", "file": "assets/voice/tha-dieu/02.mp3", "skip": 1.27, "gainDb": 4 },
+    { "t": 11.55, "who": "vit", "text": "Hửm?", "file": "assets/voice/tha-dieu/03.mp3" },
+    { "t": 12.95, "who": "vit", "text": "Lần này chạy thật nhanh!", "file": "assets/voice/tha-dieu/04.mp3" },
+    { "t": 17.45, "who": "tao", "gainDb": 2, "text": "Cậu chạy xuôi gió.", "file": "assets/voice/tha-dieu/05.mp3" },
+    { "t": 19.45, "who": "tao", "gainDb": 2, "text": "Chạy ngược lại xem.", "file": "assets/voice/tha-dieu/06.mp3" },
+    { "t": 21.65, "who": "vit", "text": "Hả?", "file": "assets/voice/tha-dieu/07.mp3", "skip": 0.97 },
+    { "t": 24.85, "who": "vit", "text": "Bay rồi!!", "file": "assets/voice/tha-dieu/08.mp3" },
+    { "t": 26.25, "who": "vit", "text": "Thấy chưa! Cao nhất xóm!", "file": "assets/voice/tha-dieu/09.mp3" },
+    { "t": 29.05, "who": "vit", "text": "Ơ... ơ... ơơơ!", "file": "assets/voice/tha-dieu/10.mp3" },
+    { "t": 35.85, "who": "vit", "text": "Táo ơi! Kéo tớ xuống với!", "file": "assets/voice/tha-dieu/11.mp3" },
+    { "t": 38.25, "who": "tao", "gainDb": 2, "text": "Đợi gió đổi chiều.", "file": "assets/voice/tha-dieu/12.mp3" },
+    { "t": 40.35, "who": "vit", "text": "...Bao giờ đổi?", "file": "assets/voice/tha-dieu/13.mp3" },
+    { "t": 42.45, "who": "tao", "text": "Mai.", "file": "assets/voice/tha-dieu/14.mp3", "skip": 0.88, "gainDb": 2 }
+  ]
+}

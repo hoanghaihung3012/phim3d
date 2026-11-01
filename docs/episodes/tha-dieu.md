@@ -19,3 +19,15 @@ nhân vật tròn, tô phẳng pastel, nét viền đậm). Nhân vật: Táo, V
 | 0:35 | Táo, vẫn ngồi, đặt tay lên dây: "bộp." Vịt dừng lại lơ lửng như một con diều thứ hai. |
 | 0:35-0:43 | Vịt: "Táo ơi! Kéo tớ xuống với!" Táo: "Đợi gió đổi chiều." Vịt: "...Bao giờ đổi?" (dế kêu) Táo: "Mai." |
 | 0:43-0:49 | Toàn cảnh: Táo ngồi giữ dây, Vịt và diều bay trên trời. Sâu ngẩng lên: "..." HẾT. |
+
+## Lồng tiếng Việt (dub)
+
+- Giọng: Vịt = ElevenLabs "Yuna" (bé gái tinh nghịch), Táo = "Quốc Việt" (giọng nam trẻ, đọc đều đều). Model eleven_v4.
+- File giọng đã chọn: `assets/voice/tha-dieu/01..14.mp3`; bảng thời điểm + âm lượng: `docs/episodes/tha-dieu.dub.json`.
+- Lưu ý: với câu rất ngắn ("Ờ.", "Hả?", "Mai.") TTS đọc luôn cả thẻ cảm xúc trong ngoặc vuông, nên dùng `skip` để bỏ đoạn đầu. Lần sau nên viết câu ngắn không kèm thẻ.
+- Xuất lại:
+  ```
+  node scripts/build-preview.mjs tha-dieu
+  NODE_PATH=/opt/node22/lib/node_modules node scripts/export-mp4.mjs nobabble.mp4 --page tha-dieu --query nobabble
+  node scripts/mix-dub.mjs nobabble.mp4 docs/episodes/tha-dieu.dub.json tao-tha-dieu-long-tieng.mp4
+  ```

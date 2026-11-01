@@ -6,10 +6,11 @@
 //
 // Usage:
 //   npm run build:preview
-//   node scripts/export-mp4.mjs [out.mp4] [--fonts DIR] [--page ENTRY]
+//   node scripts/export-mp4.mjs [out.mp4] [--fonts DIR] [--page ENTRY] [--query STR]
 // Needs: ffmpeg on PATH, and Playwright with Chromium (npm i -D playwright && npx playwright install chromium).
 // --page ENTRY: which preview to export (default index; e.g. anh-gia-dinh after
 //              `npm run build:preview -- anh-gia-dinh`).
+// --query STR: query string for the page, e.g. nobabble (no synth babble, for a dub).
 // --fonts DIR: serve Google Fonts from a local folder (itim.css + the .woff2 files) when the
 //              browser has no internet access.
 import { spawn } from 'node:child_process';
@@ -27,8 +28,10 @@ const fontsIdx = args.indexOf('--fonts');
 const fontsDir = fontsIdx >= 0 ? args.splice(fontsIdx, 2)[1] : null;
 const pageIdx = args.indexOf('--page');
 const entry = pageIdx >= 0 ? args.splice(pageIdx, 2)[1] : 'index';
+const queryIdx = args.indexOf('--query');
+const query = queryIdx >= 0 ? args.splice(queryIdx, 2)[1] : '';
 const out = resolve(args[0] ?? 'tao-muon-bay.mp4');
-const page = pathToFileURL(resolve(`dist-preview/${entry}.preview.html`)).href;
+const page = pathToFileURL(resolve(`dist-preview/${entry}.preview.html`)).href + (query ? `?${query}` : '');
 
 const work = mkdtempSync(join(tmpdir(), 'tao-export-'));
 const browser = await chromium.launch();

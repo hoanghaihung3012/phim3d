@@ -10,6 +10,15 @@ export { cut, pan, shake } from '../../../film2d/scenes/helpers';
 /** Voices of the placeholder babble synth (src/audio/synth.ts: sfx_babble_<voice>). */
 export type Voice = 'ba' | 'me' | 'nam' | 'tao' | 'vit' | 'none';
 
+/**
+ * Placeholder babble on/off. Turned off when real recorded voices are mixed in afterwards
+ * (scripts/mix-dub.mjs), so the bubbles and mouth flaps stay but the synth babble goes.
+ */
+let babbleEnabled = true;
+export function setBabble(on: boolean): void {
+  babbleEnabled = on;
+}
+
 interface Speaker {
   headTop(): Pt;
 }
@@ -49,7 +58,7 @@ export function say(
   const syllables = text.replace(/[^\p{L}]+/gu, ' ').trim().split(' ').filter(Boolean).length;
   if (voice !== 'none' && syllables > 0) {
     const dur = Math.min(t1 - t0 - 0.2, Math.max(0.25, syllables * 0.17));
-    cast.cues.push({ id: `sfx_babble_${voice}`, t: t0 + 0.05, duration: dur, volume: bubble.shout ? 1 : 0.75 });
+    if (babbleEnabled) cast.cues.push({ id: `sfx_babble_${voice}`, t: t0 + 0.05, duration: dur, volume: bubble.shout ? 1 : 0.75 });
     if (mouthOf) k.set(t0, mouthOf, { talk: 1 }).set(t0 + 0.05 + dur, mouthOf, { talk: 0 });
   }
 }
