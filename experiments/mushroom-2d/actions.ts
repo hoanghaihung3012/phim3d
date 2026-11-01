@@ -22,15 +22,16 @@ const mouth = (m: Mushroom2D, e: (typeof MUSH_MOUTHS)[number]) => (m.mouth = MUS
 export const ACTIONS: Action[] = [
   {
     id: 'hello', label: 'Chào', key: '1', duration: 3.4,
-    captions: [[0, 'Đây là Nấm.'], [1.5, 'Nấm hiền, hay ngại, hay hắt xì.']],
+    captions: [[0.2, 'Chào cả nhà! Mình là Nấm!'], [1.8, '(Nấm cao hơn Táo. Nấm rất tự hào.)']],
     apply(m, t) {
-      if (t < 0.8) return;
+      if (t < 0.2) return;
       eyes(m, 'happy');
-      mouth(m, 'smile');
-      m.armR = 1.8;
-      m.bendR = -0.3 + 0.6 * Math.sin(t * 12); // waving outside the cap rim
-      m.capTilt = 0.06;
-      m.tilt = -0.03;
+      mouth(m, 'grin');
+      m.armL = m.armR = 1.9;
+      m.bendL = -0.3 + 0.6 * Math.sin(t * 12 + 1);
+      m.bendR = -0.3 + 0.6 * Math.sin(t * 12);
+      m.y = -20 * hop(t % 0.8, 0, 0.4);
+      m.blush = 1.3;
     },
   },
   {
@@ -52,44 +53,87 @@ export const ACTIONS: Action[] = [
     },
   },
   {
-    id: 'shock', label: 'Giật mình', key: '3', duration: 2.6,
-    captions: [[0.15, 'Á!']],
+    id: 'chatty', label: 'Nói nhiều', key: '3', duration: 3.6,
+    captions: [[0.1, 'Nè nè, biết gì chưa...'], [1.3, '...rồi còn chuyện này nữa nè...'], [2.5, '...mà khoan, chuyện kia đã!']],
     apply(m, t) {
-      if (t < 0.15) return;
-      eyes(m, 'shock');
-      mouth(m, 'o');
-      m.armL = m.armR = 2.0;
-      m.bendL = m.bendR = -0.6;
-      // The cap stays on: it just stretches tall for a beat.
-      m.capSquash = t < 0.6 ? 1.18 : t < 0.7 ? 0.92 : 1;
-      m.y = -30 * hop(t, 0.15, 0.4);
-      if (t > 0.7) { m.sweat = seg(t, 0.7, 2.2); m.armL = m.armR = 1.1; }
+      eyes(m, Math.floor(t / 0.9) % 2 ? 'happy' : 'dot');
+      m.talk = 1;
+      m.lookX = 1;
+      m.tilt = 0.04;
+      m.armL = 1.2 + 0.5 * Math.sin(t * 7);
+      m.armR = 1.5 + 0.5 * Math.sin(t * 7 + 2);
+      m.bendL = 0.6;
+      m.bendR = -0.4;
+      m.blush = 1.2;
     },
   },
   {
-    id: 'shy', label: 'Ngại', key: '4', duration: 3,
-    captions: [[0.3, 'Nấm ngại...']],
+    id: 'smart', label: 'Thông thái', key: '4', duration: 3.8,
+    captions: [[0.3, 'Thật ra thì...'], [1.3, 'nấm không phải là thực vật đâu nha.'], [2.8, '(Nấm học giỏi lắm.)']],
     apply(m, t) {
       if (t < 0.3) return;
-      eyes(m, 'closed');
-      mouth(m, 'wavy');
-      m.blush = 1.8;
-      m.capDown = 38; // pulls the cap down over the eyes
-      m.capTilt = -0.08;
-      m.lookX = -1;
-      m.armL = m.armR = 0.7;
-      m.bendL = m.bendR = 1.4; // fiddling fingers in front
-      m.tilt = 0.04 * Math.sin(t * 3);
-      if (t > 1.6) { eyes(m, 'dot'); m.capDown = 26; }
-      m.heart = t > 1.8 ? 1 : 0;
+      m.glasses = 1;
+      m.brows = 2;
+      eyes(m, 'half');
+      mouth(m, t > 1.3 && t < 2.6 ? 'grin' : 'smile');
+      m.talk = t > 1.3 && t < 2.6 ? 1 : 0;
+      // One finger up, very professor-like.
+      m.armR = 2.3;
+      m.bendR = 1.6;
+      m.armL = 0.5;
+      m.bendL = 1.3;
+      m.tilt = -0.03;
+      m.bulb = t > 0.6 ? 1 : 0;
     },
   },
   {
-    id: 'sneeze', label: 'Hắt xì', key: '5', duration: 3.2,
+    id: 'fierce', label: 'Dữ', key: '5', duration: 3.4,
+    captions: [[0.1, 'HỪ!'], [1.7, 'Hihi, giỡn thôi.']],
+    apply(m, t) {
+      if (t < 1.6) {
+        m.brows = 1;
+        eyes(m, 'dot');
+        mouth(m, 'frown');
+        m.anger = 1;
+        m.blush = 0.4;
+        m.tilt = 0.06;
+        m.capTilt = 0.08;
+        m.armL = m.armR = 0.7;
+        m.bendL = m.bendR = 1.5; // fists on hips
+        // Stomp stomp.
+        const k = t % 0.4;
+        m.liftR = k < 0.2 ? 24 : 0;
+        if (k >= 0.2 && k < 0.27) { m.sy = 0.92; m.sx = 1.05; }
+        return;
+      }
+      // ...and instantly back to sunny.
+      eyes(m, 'happy');
+      mouth(m, 'grin');
+      m.blush = 1.5;
+      m.armR = 1.9;
+      m.bendR = -0.3 + 0.5 * Math.sin(t * 12);
+    },
+  },
+  {
+    id: 'clueless', label: 'Vô tri', key: '6', duration: 3.6,
+    captions: [[0.2, 'Nấm đang suy nghĩ...'], [1.8, '...Nấm quên mất mình đang nghĩ gì.']],
+    apply(m, t) {
+      m.blink = 0;
+      eyes(m, 'dot');
+      mouth(m, 'o');
+      m.lookY = -0.6;
+      m.lookX = t < 1.8 ? 0.5 : 0;
+      m.armL = m.armR = 0.05;
+      m.capTilt = -0.04;
+      if (t > 1.8) { m.question = 1; mouth(m, 'flat'); m.lookY = 0; }
+      if (t > 3.0) { eyes(m, 'happy'); mouth(m, 'grin'); m.question = 0; } // whatever, still happy
+    },
+  },
+  {
+    id: 'sneeze', label: 'Hắt xì', key: '7', duration: 3.2,
     captions: [[0.1, 'Hắt...'], [1.1, 'XÌ!']],
     apply(m, t) {
       if (t < 1.1) {
-        // Wind-up: squint, lean back, cap creeping up.
         const k = seg(t, 0, 1.0);
         eyes(m, t > 0.4 ? 'closed' : 'half');
         mouth(m, 'o');
@@ -105,43 +149,16 @@ export const ACTIONS: Action[] = [
       m.sx = t < 1.25 ? 1.1 : 1;
       m.capSquash = t < 1.25 ? 1.2 : t < 1.4 ? 0.9 : 1;
       m.spores = seg(t, 1.1, 2.4) * 0.999;
-      if (t > 2.2) { eyes(m, 'dot'); mouth(m, 'flat'); m.blush = 1.5; }
-    },
-  },
-  {
-    id: 'sleepy', label: 'Buồn ngủ', key: '6', duration: 3.6,
-    captions: [[0.5, 'Nấm buồn ngủ.']],
-    apply(m, t) {
-      eyes(m, t < 0.8 ? 'half' : 'closed');
-      mouth(m, 'o');
-      m.capTilt = 0.22 * seg(t, 0, 1.2);
-      m.tilt = 0.06 * Math.sin(t * 1.6);
-      m.armL = m.armR = 0.05;
-      m.zzz = t > 1.0 ? 1 + Math.floor((t - 1.0) / 0.5) : 0;
-      if (t > 3.0) { eyes(m, 'shock'); mouth(m, 'flat'); m.capTilt = 0; m.zzz = 0; } // jolts awake
-    },
-  },
-  {
-    id: 'confused', label: 'Bối rối', key: '7', duration: 3,
-    captions: [[0.3, 'Hở?']],
-    apply(m, t) {
-      if (t < 0.3) return;
-      mouth(m, 'wavy');
-      m.question = 1;
-      m.lookX = t < 1.2 ? -1 : t < 2.0 ? 1 : 0;
-      m.armR = 2.1;
-      m.bendR = 1.0 + 0.25 * Math.sin(t * 16); // scratching under the cap rim
-      m.capTilt = -0.05 + 0.03 * Math.sin(t * 16);
-      m.tilt = 0.05;
+      if (t > 2.2) { eyes(m, 'happy'); mouth(m, 'grin'); m.blush = 1.5; }
     },
   },
   {
     id: 'run', label: 'Chạy', key: '8', duration: 2.6,
-    captions: [[0.2, 'Lạch bạch lạch bạch.']],
+    captions: [[0.2, 'Lạch bạch lạch bạch!']],
     apply(m, t) {
       if (t < 0.2) return;
-      eyes(m, 'dot');
-      mouth(m, 'o');
+      eyes(m, 'happy');
+      mouth(m, 'grin');
       m.run = 1;
       m.tilt = 0.08;
       m.armL = 0.9 + 0.7 * Math.sin(t * 20);
@@ -151,4 +168,4 @@ export const ACTIONS: Action[] = [
   },
 ];
 
-export const DEMO_ORDER = ['hello', 'happy', 'shock', 'shy', 'sneeze', 'sleepy', 'confused', 'run'];
+export const DEMO_ORDER = ['hello', 'happy', 'chatty', 'smart', 'fierce', 'clueless', 'sneeze', 'run'];

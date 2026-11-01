@@ -59,7 +59,8 @@ const sk = new Sketch(ctx);
 const nam = new Mushroom2D();
 const DEFAULTS = { ...nam };
 const apple = new Apple2D();
-Object.assign(apple, { x: 190, y: 0, scale: 0.55, legs: 1, lookX: -1 });
+// Nấm is clearly taller than Táo (about 1.6x).
+Object.assign(apple, { x: 190, y: 0, scale: 0.48, legs: 1, lookX: -1 });
 
 // --- Acting -------------------------------------------------------------------
 const byId = new Map(ACTIONS.map((a) => [a.id, a]));

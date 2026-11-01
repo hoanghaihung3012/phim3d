@@ -1,5 +1,7 @@
 // Nấm: a little mushroom in the same doodle style as Táo Lém (thick dark ink, flat pastel
-// fills, dot eyes, blush). Lavender cap with white spots, a chubby cream stem with the face,
+// fills, dot eyes, blush). Taller than Táo. Cheerful, outgoing and chatty, a know-it-all
+// who does well at school, a bit clueless, and now and then briefly fierce.
+// Lavender cap with white spots, a chubby cream stem with the face,
 // noodle arms and stubby legs. The cap stays on the head; it acts by stretching when startled,
 // pulling down when shy and drooping when sleepy.
 import { Sketch, ellipse, quad, type Pt } from '../doodle/Sketch';
@@ -74,6 +76,16 @@ export class Mushroom2D {
   /** 0..1 sneeze: a puff of spores. */
   spores = 0;
   heart = 0;
+  /** Eyebrows: 0 none, 1 cross (the occasional fierce moment), 2 raised (know-it-all). */
+  brows = 0;
+  /** Round "smart" glasses (0/1). */
+  glasses = 0;
+  /** Chatty: mouth flaps open/closed while > 0. */
+  talk = 0;
+  /** Anger mark on the cap (0/1). */
+  anger = 0;
+  /** Light bulb idea above the cap (0/1). */
+  bulb = 0;
 
   private matrix(t: number): DOMMatrix {
     const bob = this.run > 0.5 ? 10 * Math.abs(Math.sin(t * 20)) : 0;
@@ -219,7 +231,8 @@ export class Mushroom2D {
   private drawFace(sk: Sketch, t: number): void {
     const c = sk.ctx;
     let eyes = MUSH_EYES[Math.round(this.eyes)] ?? 'dot';
-    const mouth = MUSH_MOUTHS[Math.round(this.mouth)] ?? 'smile';
+    let mouth = MUSH_MOUTHS[Math.round(this.mouth)] ?? 'smile';
+    if (this.talk > 0.5) mouth = Math.floor(t * 8) % 2 ? 'grin' : 'smile';
     if (this.blink > 0.5 && (eyes === 'dot' || eyes === 'half') && (t + 0.7) % 3.9 < 0.12) eyes = 'closed';
 
     const lx = this.lookX * 12;
@@ -254,6 +267,16 @@ export class Mushroom2D {
         case 'closed':
           sk.line(quad([x - 13, ey], [x, ey + 7], [x + 13, ey], 6), id, { width: thin });
           break;
+      }
+      const by = ey - 26;
+      const brows = Math.round(this.brows);
+      if (brows === 1) sk.line([[x + s * 15, by - 9], [x - s * 11, by + 4]], id + 70, { width: LW * 0.85 }); // inner ends down = cross
+      else if (brows === 2) sk.line(quad([x - 12, by], [x, by - 9], [x + 12, by], 5), id + 70, { width: LW * 0.6 });
+      if (this.glasses > 0.5) {
+        sk.shape(ellipse(x, ey, 22, 20, 18), id + 80, { width: LW * 0.6, amp: 0.5 });
+        if (s < 0) sk.line([[x + 22, ey - 2], [x + 42, ey - 2]], id + 81, { width: LW * 0.55 });
+        // A little glint.
+        sk.line([[x + 6, ey - 13], [x + 13, ey - 6]], id + 82, { width: LW * 0.5, color: '#FFFFFF' });
       }
     }
     const mx = lx * 0.6;
@@ -333,6 +356,30 @@ export class Mushroom2D {
     };
     if (this.question > 0) word('?', 200, capTop + 10 + Math.sin(t * 6) * 4, 80 * this.question, 0.2);
     if (this.zzz > 0) for (let i = 0; i < Math.min(3, Math.floor(this.zzz)); i++) word('z', 170 + i * 34, capTop + 20 - i * 38, 38 + i * 12, 0.15);
+    if (this.anger > 0.5) {
+      // Comic anger mark: four little curved ticks.
+      const ax = 120;
+      const ay = capTop + 70;
+      for (let i = 0; i < 4; i++) {
+        const a = (i * Math.PI) / 2 + Math.PI / 4;
+        const dx = Math.cos(a) * 22;
+        const dy = Math.sin(a) * 22;
+        sk.line(quad([ax + dx * 0.4, ay + dy * 2], [ax + dx * 1.6, ay + dy * 1.6], [ax + dx * 2, ay + dy * 0.4], 4), ID.fx + 40 + i, {
+          width: LW,
+          color: '#E2475B',
+        });
+      }
+    }
+    if (this.bulb > 0.5) {
+      const bx = -150;
+      const by = capTop - 10;
+      sk.shape(ellipse(bx, by, 26, 28, 18), ID.fx + 50, { fill: '#FFE58A', amp: 0.6, width: LW * 0.7 });
+      sk.shape([[bx - 12, by + 24], [bx + 12, by + 24], [bx + 10, by + 40], [bx - 10, by + 40]], ID.fx + 51, { fill: '#E6E4EE', width: LW * 0.6, amp: 0.4 });
+      for (let i = 0; i < 5; i++) {
+        const a = -Math.PI / 2 + (i - 2) * 0.55;
+        sk.line([[bx + Math.cos(a) * 38, by + Math.sin(a) * 38], [bx + Math.cos(a) * 54, by + Math.sin(a) * 54]], ID.fx + 52 + i, { width: LW * 0.55 });
+      }
+    }
     if (this.heart > 0) {
       const x = -200;
       const y = capTop + 20 - (t % 1) * 20;
