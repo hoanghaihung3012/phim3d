@@ -17,7 +17,9 @@ npm run dev        # mở http://localhost:5173
 - **Space**: play / pause · **← / →**: lùi/tiến 1 hình vẽ (giữ Shift = 1 giây)
 - Kéo thanh seek để nhảy tới bất kỳ giây nào. Mở `http://localhost:5173/?t=18` để vào thẳng giây 18.
 - Nút **⏺ Xuất WebM**: render lại toàn bộ phim ở 1920×1080 (kèm âm thanh) và tải file `.webm` về.
-  Muốn MP4: `ffmpeg -i tao-muon-bay.webm -c:v libx264 -pix_fmt yuv420p -c:a aac tao-muon-bay.mp4`
+- **Xuất MP4 trực tiếp** (không cần ghi thời gian thực, cần `ffmpeg` và Playwright + Chromium):
+  `npm run build:preview` rồi `npm run export:mp4 -- tao-muon-bay.mp4`. Script mở bản preview trong
+  Chromium ẩn, chụp từng hình vẽ (12/giây), render âm thanh offline, rồi ghép bằng ffmpeg (H.264 + AAC, 30 fps).
 
 Kiểm tra code: `npm run typecheck` · Build tĩnh: `npm run build` (ra `dist/`)
 · Preview 1 file HTML để chia sẻ: `npm run build:preview` → `dist-preview/index.preview.html`.
