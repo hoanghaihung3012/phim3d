@@ -14,7 +14,31 @@ function hash(n: number): number {
   return s - Math.floor(s);
 }
 
+/**
+ * Look of the strokes and fills. The default keeps the pastel doodle look; other themes
+ * (see doodle/themes.ts) can thin the ink and wash colours out without touching characters.
+ */
+export interface SketchTheme {
+  ink: string;
+  paper: string;
+  /** Multiplies every outline width. */
+  lineScale: number;
+  /** Multiplies the hand wobble. */
+  wobbleScale: number;
+  /** Maps a fill colour to the colour actually painted. */
+  paint(color: string): string;
+}
+
+export const DEFAULT_THEME: SketchTheme = {
+  ink: INK,
+  paper: '#FBFAF6',
+  lineScale: 1,
+  wobbleScale: 1,
+  paint: (c) => c,
+};
+
 export class Sketch {
+  theme: SketchTheme = DEFAULT_THEME;
   /** Boil seed: changes a few times per second. */
   seed = 0;
   /** Camera matrix (world -> canvas pixels); lets objects convert local points to world. */
@@ -33,6 +57,20 @@ export class Sketch {
   scaleNow(): number {
     const m = this.ctx.getTransform();
     return Math.sqrt(Math.abs(m.a * m.d - m.b * m.c)) || 1;
+  }
+
+  get ink(): string {
+    return this.theme.ink;
+  }
+
+  /** Themed fill colour (INK always maps to the theme's ink). */
+  paint(color: string): string {
+    return color === INK ? this.theme.ink : this.theme.paint(color);
+  }
+
+  /** Themed outline width: screen px -> local units. */
+  lw(widthPx: number): number {
+    return this.px(widthPx * this.theme.lineScale);
   }
 
   /** Converts screen pixels to current local units. */
@@ -61,7 +99,7 @@ export class Sketch {
 
   /** Jitters points; amp is in screen px. */
   wobble(pts: Pt[], id: number, ampPx: number): Pt[] {
-    const amp = this.px(ampPx);
+    const amp = this.px(ampPx * this.theme.wobbleScale);
     const n = pts.length;
     return pts.map(([x, y], i) => {
       const u = i / n;
@@ -96,8 +134,8 @@ export class Sketch {
 
   private pen(widthPx: number, color: string): void {
     const c = this.ctx;
-    c.lineWidth = this.px(widthPx);
-    c.strokeStyle = color;
+    c.lineWidth = this.lw(widthPx);
+    c.strokeStyle = color === INK ? this.theme.ink : color;
     c.lineCap = 'round';
     c.lineJoin = 'round';
   }
@@ -114,11 +152,11 @@ export class Sketch {
     const c = this.ctx;
     this.trace(this.wobble(pts, id, opts.amp ?? 1.6), true);
     if (opts.fill) {
-      c.fillStyle = opts.fill;
+      c.fillStyle = this.paint(opts.fill);
       c.fill();
     }
     if (opts.stroke !== false) {
-      this.pen(opts.width ?? LW, INK);
+      this.pen(opts.width ?? LW, this.theme.ink);
       c.stroke();
     }
   }
@@ -129,10 +167,10 @@ export class Sketch {
     this.trace(this.wobble(pts, id, amp), false);
     c.lineCap = 'round';
     c.lineJoin = 'round';
-    c.strokeStyle = INK;
-    c.lineWidth = width + this.px(LW) * 2;
+    c.strokeStyle = this.theme.ink;
+    c.lineWidth = width + this.lw(LW) * 2;
     c.stroke();
-    c.strokeStyle = fill;
+    c.strokeStyle = this.paint(fill);
     c.lineWidth = width;
     c.stroke();
   }
@@ -140,7 +178,7 @@ export class Sketch {
   /** Slightly wobbly filled ellipse (eye dots, blush). */
   blob(x: number, y: number, rx: number, ry: number, id: number, fill: string, amp = 0.6): void {
     this.trace(this.wobble(ellipse(x, y, rx, ry, 16), id, amp), true);
-    this.ctx.fillStyle = fill;
+    this.ctx.fillStyle = this.paint(fill);
     this.ctx.fill();
   }
 }

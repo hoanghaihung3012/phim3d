@@ -10,6 +10,14 @@ tô phẳng pastel, mắt chấm, má hồng, line boil 12 hình/giây). Nhân v
 - Xem thử: `npm run dev` rồi mở `/anh-gia-dinh.html` (`?t=24` để nhảy tới giây 24).
 - Xuất MP4: `npm run build:preview -- anh-gia-dinh` rồi `node scripts/export-mp4.mjs out.mp4 --page anh-gia-dinh`.
 
+## Bản "nét mảnh" (anh-gia-dinh-net.html)
+
+Cùng kịch bản và âm thanh, đổi cách vẽ cho tối giản hơn: giấy trắng tinh, nét đen mảnh gần như
+không rung, màu gần như trắng hết (chỉ Táo giữ màu đỏ), phòng chỉ còn đường sàn, sofa và tranh,
+nét đứng yên (không line boil) và diễn hoạt "tiết kiệm" 8 hình/giây.
+Theme nằm ở `src/film2d/doodle/themes.ts` (`LINE_THEME`), dùng được cho mọi phim 2D qua `Sketch.theme`.
+Xuất MP4: `npm run build:preview -- anh-gia-dinh-net` rồi `node scripts/export-mp4.mjs out.mp4 --page anh-gia-dinh-net`.
+
 ## Ý tưởng
 
 Vịt chụp giúp nhà Táo một tấm ảnh gia đình. Lần nào cũng hỏng một người. Lần cuối ai cũng đẹp,

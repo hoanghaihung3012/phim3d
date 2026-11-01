@@ -1,7 +1,7 @@
 // Background doodles drawn with parallax: a sun and faceless outline clouds spread upward,
 // so rising shots (balloons, Bé Mây) show the sky sliding past.
 import { Sketch, rand, scallop } from '../doodle/Sketch';
-import { COLORS, INK, LW } from '../doodle/style';
+import { COLORS, LW } from '../doodle/style';
 
 const ID = { sun: 701, rays: 702, cloud: 720 };
 
@@ -38,10 +38,10 @@ export class Sky2D {
       const w = 90 + rand(i + 70) * 80;
       const pts = scallop(x, y, w, w * 0.45, 5 + Math.floor(rand(i + 3) * 3), 0.2, 48);
       sk.trace(sk.wobble(pts, ID.cloud + i, 1.4), true);
-      c.fillStyle = this.dusk > 0.5 ? '#FFF4EE' : '#FFFFFF';
+      c.fillStyle = sk.paint(this.dusk > 0.5 ? '#FFF4EE' : '#FFFFFF');
       c.fill();
-      c.lineWidth = sk.px(LW * 0.8);
-      c.strokeStyle = INK;
+      c.lineWidth = sk.lw(LW * 0.8);
+      c.strokeStyle = sk.ink;
       c.stroke();
     }
   }

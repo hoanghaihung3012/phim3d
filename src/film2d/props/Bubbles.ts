@@ -3,7 +3,7 @@
 // keeps its size in every shot. `shout` gives a spiky outline (the fierce moments).
 import { FILM } from '../../config/film';
 import type { Pt, Sketch } from '../doodle/Sketch';
-import { FONT_FAMILY, INK, LW } from '../doodle/style';
+import { FONT_FAMILY, LW } from '../doodle/style';
 
 export interface Bubble {
   t0: number;
@@ -72,14 +72,14 @@ export class Bubbles {
       // Outline pass (double width, half gets covered by the fill), then fill pass.
       if (tail.length) {
         sk.trace(sk.wobble(tail, id, 1), true);
-        c.lineWidth = LW * 2;
+        c.lineWidth = LW * 2 * sk.theme.lineScale;
         c.lineJoin = 'round';
-        c.strokeStyle = INK;
+        c.strokeStyle = sk.ink;
         c.stroke();
       }
       sk.trace(sk.wobble(box, id + 1, 1.4), true);
-      c.lineWidth = LW * 2;
-      c.strokeStyle = INK;
+      c.lineWidth = LW * 2 * sk.theme.lineScale;
+      c.strokeStyle = sk.ink;
       c.stroke();
       c.fillStyle = '#FFFFFF';
       c.fill();
@@ -87,7 +87,7 @@ export class Bubbles {
         sk.trace(sk.wobble(tail, id, 1), true);
         c.fill();
       }
-      c.fillStyle = INK;
+      c.fillStyle = sk.ink;
       c.textAlign = 'center';
       c.textBaseline = 'middle';
       c.font = `${size}px ${FONT_FAMILY}`;

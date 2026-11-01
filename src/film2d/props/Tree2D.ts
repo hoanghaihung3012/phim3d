@@ -1,7 +1,7 @@
 // The apple tree: pale trunk, scalloped canopy, a few ordinary (faceless) apples and the
 // branch Táo hangs from.
 import { Sketch, ellipse, quad, scallop, type Pt } from '../doodle/Sketch';
-import { COLORS, INK, LW } from '../doodle/style';
+import { COLORS, LW } from '../doodle/style';
 
 const ID = { trunk: 401, canopy: 402, branch: 403, apples: 410, stems: 430, marks: 450 };
 const CANOPY_Y = -640;
@@ -41,17 +41,17 @@ export class Tree2D {
     const canopy = sk.wobble(scallop(x, CANOPY_Y, 330, 210, 11, 0.12), ID.canopy, 2);
     c.save();
     sk.trace(canopy, true);
-    c.fillStyle = COLORS.canopyShade;
+    c.fillStyle = sk.paint(COLORS.canopyShade);
     c.fill();
     c.clip();
     c.translate(-30, -26);
     sk.trace(canopy, true);
-    c.fillStyle = COLORS.canopy;
+    c.fillStyle = sk.paint(COLORS.canopy);
     c.fill();
     c.restore();
     sk.trace(canopy, true);
-    c.lineWidth = sk.px(LW);
-    c.strokeStyle = INK;
+    c.lineWidth = sk.lw(LW);
+    c.strokeStyle = sk.ink;
     c.lineJoin = 'round';
     c.stroke();
     // A few leaf ticks on the canopy.

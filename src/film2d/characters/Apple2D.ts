@@ -203,13 +203,13 @@ export class Apple2D {
     // Flat fill with a soft crescent of shade on the lower right.
     c.save();
     sk.trace(body, true);
-    c.fillStyle = COLORS.appleShade;
+    c.fillStyle = sk.paint(COLORS.appleShade);
     c.fill();
     c.clip();
     c.translate(-26, -22);
     c.scale(0.985, 0.985);
     sk.trace(body, true);
-    c.fillStyle = COLORS.apple;
+    c.fillStyle = sk.paint(COLORS.apple);
     c.fill();
     c.restore();
 
@@ -220,8 +220,8 @@ export class Apple2D {
 
     // Outline with a small gap on the upper left, like a pen lifted off the paper.
     sk.trace([...body.slice(64), ...body.slice(0, 62)], false);
-    c.lineWidth = sk.px(LW);
-    c.strokeStyle = INK;
+    c.lineWidth = sk.lw(LW);
+    c.strokeStyle = sk.ink;
     c.lineCap = 'round';
     c.lineJoin = 'round';
     c.stroke();
@@ -351,9 +351,9 @@ export class Apple2D {
       spots.forEach(([x, y], i) => {
         const s = (14 + 6 * sk.jitter(ID.spark + i)) * this.sparkle * (0.7 + 0.3 * Math.abs(Math.sin(t * 5 + i)));
         if (s <= 1) return;
-        c.fillStyle = COLORS.spark;
-        c.strokeStyle = INK;
-        c.lineWidth = sk.px(LW * 0.45);
+        c.fillStyle = sk.paint(COLORS.spark);
+        c.strokeStyle = sk.ink;
+        c.lineWidth = sk.lw(LW * 0.45);
         c.beginPath();
         c.moveTo(x, y - s * 1.6);
         c.quadraticCurveTo(x, y, x + s, y);

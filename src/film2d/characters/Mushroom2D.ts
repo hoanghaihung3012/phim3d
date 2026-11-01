@@ -150,17 +150,17 @@ export class Mushroom2D {
     const body = sk.wobble(this.stemShape(), ID.stem, 1.4);
     c.save();
     sk.trace(body, true);
-    c.fillStyle = MUSH_COLORS.stemShade;
+    c.fillStyle = sk.paint(MUSH_COLORS.stemShade);
     c.fill();
     c.clip();
     c.translate(-16, -10);
     sk.trace(body, true);
-    c.fillStyle = MUSH_COLORS.stem;
+    c.fillStyle = sk.paint(MUSH_COLORS.stem);
     c.fill();
     c.restore();
     sk.trace(body, true);
-    c.lineWidth = sk.px(LW);
-    c.strokeStyle = INK;
+    c.lineWidth = sk.lw(LW);
+    c.strokeStyle = sk.ink;
     c.lineJoin = 'round';
     c.stroke();
   }
@@ -201,12 +201,12 @@ export class Mushroom2D {
 
     c.save();
     sk.trace(capPts, true);
-    c.fillStyle = MUSH_COLORS.capShade;
+    c.fillStyle = sk.paint(MUSH_COLORS.capShade);
     c.fill();
     c.clip();
     c.translate(-20, -18);
     sk.trace(capPts, true);
-    c.fillStyle = MUSH_COLORS.cap;
+    c.fillStyle = sk.paint(MUSH_COLORS.cap);
     c.fill();
     c.restore();
 
@@ -219,8 +219,8 @@ export class Mushroom2D {
     c.restore();
 
     sk.trace(capPts, true);
-    c.lineWidth = sk.px(LW);
-    c.strokeStyle = INK;
+    c.lineWidth = sk.lw(LW);
+    c.strokeStyle = sk.ink;
     c.lineJoin = 'round';
     c.stroke();
     // Little shine.
@@ -330,9 +330,9 @@ export class Mushroom2D {
       const spots: Pt[] = [[-230, capTop + 40], [225, capTop + 70], [170, capTop - 30]];
       spots.forEach(([x, y], i) => {
         const s = 15 * this.sparkle * (0.7 + 0.3 * Math.abs(Math.sin(t * 5 + i)));
-        c.fillStyle = '#FFD86B';
-        c.strokeStyle = INK;
-        c.lineWidth = sk.px(LW * 0.45);
+        c.fillStyle = sk.paint('#FFD86B');
+        c.strokeStyle = sk.ink;
+        c.lineWidth = sk.lw(LW * 0.45);
         c.beginPath();
         c.moveTo(x, y - s * 1.6);
         c.quadraticCurveTo(x, y, x + s, y);
@@ -350,7 +350,7 @@ export class Mushroom2D {
       c.font = `${size}px ${FONT_FAMILY}`;
       c.textAlign = 'center';
       c.textBaseline = 'middle';
-      c.fillStyle = INK;
+      c.fillStyle = sk.paint(INK);
       c.fillText(text, 0, 0);
       c.restore();
     };

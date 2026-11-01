@@ -7,11 +7,10 @@
 import { FILM } from '../../config/film';
 import type { Timeline } from '../../core/Timeline';
 import type { Camera2D } from '../../film2d/Camera2D';
-import { Sketch, box, type Pt } from '../../film2d/doodle/Sketch';
-import { FONT_FAMILY, INK, LW, PAPER } from '../../film2d/doodle/style';
+import { DEFAULT_THEME, Sketch, box, type Pt, type SketchTheme } from '../../film2d/doodle/Sketch';
+import { FONT_FAMILY, INK, LW } from '../../film2d/doodle/style';
 import { PERFECT_PHOTO, PERFECT_T, PHOTO_TIMES, REC_START, type EpisodeCast } from './cast';
 
-const DRAW_FPS = 12;
 const PHOTO_W = 1280;
 const PHOTO_H = 720;
 const CAPTIONS = ['', 'TẤM 1', 'TẤM 2', 'TẤM 3', 'TẤM ĐẸP NHẤT'];
@@ -32,7 +31,7 @@ function drawWorld(sk: Sketch, cast: EpisodeCast, t: number, camera: DOMMatrix):
   cast.vit.draw(sk, t);
 }
 
-export function createEpisodeDrawer() {
+export function createEpisodeDrawer(theme: SketchTheme = DEFAULT_THEME, DRAW_FPS = 12) {
   const photos = new Map<number, HTMLCanvasElement>();
   const lcdCanvas = document.createElement('canvas');
   lcdCanvas.width = PHOTO_W;
@@ -44,10 +43,11 @@ export function createEpisodeDrawer() {
     const m = new DOMMatrix().scale(cv.width / FILM.width).multiply(view.matrix());
     tl.evaluate(tp);
     const sk = new Sketch(cv.getContext('2d')!);
+    sk.theme = theme;
     sk.seed = seed;
     const c = sk.ctx;
     c.setTransform(1, 0, 0, 1, 0, 0);
-    c.fillStyle = PAPER;
+    c.fillStyle = theme.paper;
     c.fillRect(0, 0, cv.width, cv.height);
     // The photo has no people's speech bubbles, but keeps everything else.
     drawWorld(sk, cast, tp, m);
@@ -67,6 +67,7 @@ export function createEpisodeDrawer() {
   }
 
   return function drawFrame(sk: Sketch, cast: EpisodeCast, t: number, tl: Timeline): void {
+    sk.theme = theme;
     const { fx, room } = cast;
     // 1) Offscreen renders needed by this frame (they move the timeline, so restore after).
     const photoIndex = Math.round(fx.photo);
@@ -97,7 +98,7 @@ export function createEpisodeDrawer() {
     const c = sk.ctx;
     c.setTransform(1, 0, 0, 1, 0, 0);
     c.globalAlpha = 1;
-    c.fillStyle = PAPER;
+    c.fillStyle = theme.paper;
     c.fillRect(0, 0, FILM.width, FILM.height);
     const jitter: [number, number] = [sk.jitter(999, 1), sk.jitter(999, 2)];
     const camera = cast.cam.matrix(1, jitter);
@@ -181,8 +182,8 @@ function drawPolaroid(sk: Sketch, img: HTMLCanvasElement, tilt: number, scale: n
   sk.shape(box(card[0][0], card[0][1], card[4][0], card[4][1], 8), 8800, { fill: '#FFFFFF', amp: 1 });
   c.drawImage(img, -pw / 2, y0 + side, pw, ph);
   boxPath(c, rect(-pw / 2, y0 + side, pw / 2, y0 + side + ph));
-  c.lineWidth = LW * 0.6;
-  c.strokeStyle = INK;
+  c.lineWidth = LW * 0.6 * sk.theme.lineScale;
+  c.strokeStyle = sk.ink;
   c.stroke();
   text(c, caption, 0, y0 + side + ph + bottom / 2 + 4, 62);
   c.restore();
@@ -202,8 +203,8 @@ function drawLcd(sk: Sketch, img: HTMLCanvasElement, scrubT: number, t: number):
   for (let i = 0; i < 2; i++) sk.shape(ringPts(sw / 2 + 85, -60 + i * 120, 30), 8901 + i, { fill: '#9BA0B4', width: LW * 0.8 });
   c.drawImage(img, -sw / 2, -sh / 2, sw, sh);
   boxPath(c, rect(-sw / 2, -sh / 2, sw / 2, sh / 2));
-  c.lineWidth = LW * 0.8;
-  c.strokeStyle = INK;
+  c.lineWidth = LW * 0.8 * sk.theme.lineScale;
+  c.strokeStyle = sk.ink;
   c.stroke();
   // Playback UI drawn on the screen.
   const secs = Math.max(0, scrubT - REC_START);

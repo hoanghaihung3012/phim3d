@@ -29,11 +29,18 @@ export class LivingRoom2D {
   photo = 0;
   photoImage: CanvasImageSource | null = null;
   stool = 1;
+  /** Bare room: only floor line, sofa, frame (no window, plant, rug or floor colour). */
+  minimal = false;
 
   drawBack(sk: Sketch, t: number): void {
     const c = sk.ctx;
+    if (this.minimal) {
+      sk.line([[-3000, 0], [-1000, 1], [1000, -1], [3000, 0]], 7000, { width: LW });
+      this.drawFrame(sk);
+      return;
+    }
     // Floor band and skirting line.
-    c.fillStyle = C.floor;
+    c.fillStyle = sk.paint(C.floor);
     c.fillRect(-3000, 0, 6000, 1200);
     sk.line([[-3000, 0], [-1000, 2], [1000, -1], [3000, 0]], 7000, { width: LW });
     sk.shape(ellipse(SOFA.x + 120, 40, 820, 46, 30), 7001, { fill: C.rug, width: LW * 0.8 });

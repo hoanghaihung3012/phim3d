@@ -34,7 +34,7 @@ export class Cloud2D {
     if (this.shadow > 0) {
       c.save();
       c.globalAlpha = 0.12 * this.shadow;
-      c.fillStyle = INK;
+      c.fillStyle = sk.paint(INK);
       c.beginPath();
       c.ellipse(this.x, 0, RX * this.scale * 1.1, 18 * this.scale + 6, 0, 0, Math.PI * 2);
       c.fill();
@@ -57,17 +57,17 @@ export class Cloud2D {
     const body = sk.wobble(scallop(0, 0, RX, RY, 9, 0.16), ID.body, 1.6);
     c.save();
     sk.trace(body, true);
-    c.fillStyle = COLORS.cloudShade;
+    c.fillStyle = sk.paint(COLORS.cloudShade);
     c.fill();
     c.clip();
     c.translate(-18, -18);
     sk.trace(body, true);
-    c.fillStyle = COLORS.cloud;
+    c.fillStyle = sk.paint(COLORS.cloud);
     c.fill();
     c.restore();
     sk.trace(body, true);
-    c.lineWidth = sk.px(LW);
-    c.strokeStyle = INK;
+    c.lineWidth = sk.lw(LW);
+    c.strokeStyle = sk.ink;
     c.lineJoin = 'round';
     c.stroke();
 

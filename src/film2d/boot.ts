@@ -32,6 +32,9 @@ export interface Film2DOptions<C = Cast2D> {
   fileName?: string;
   /** Cast factory (default: the "Táo Muốn Bay" cast). */
   createCast?: () => C;
+  /** Drawings per second (default 12) and number of line-boil redraws (default 3; 1 = still lines). */
+  drawFps?: number;
+  boil?: number;
   /** Draws one frame (default: the "Táo Muốn Bay" frame). */
   drawFrame?: (sk: Sketch, cast: C, t: number, timeline: Timeline) => void;
 }
@@ -44,6 +47,8 @@ export function bootFilm2D<C = Cast2D>(opts: Film2DOptions<C>) {
 
   const stage = new Stage2D(document.getElementById('viewport')!);
   const sk = new Sketch(stage.ctx);
+  const drawFps = opts.drawFps ?? DRAW_FPS;
+  const boil = opts.boil ?? BOIL_DRAWINGS;
   const cast = (opts.createCast ?? (createCast as unknown as () => C))();
   const draw = opts.drawFrame ?? (drawFrame as unknown as (sk: Sketch, cast: C, t: number, tl: Timeline) => void);
 
@@ -61,12 +66,12 @@ export function bootFilm2D<C = Cast2D>(opts: Film2DOptions<C>) {
   let lastT = -1;
   let drawnAt = Number.NaN;
   function renderAt(t: number) {
-    const frame = Math.floor(t * DRAW_FPS + 1e-6);
-    const tq = frame / DRAW_FPS;
+    const frame = Math.floor(t * drawFps + 1e-6);
+    const tq = frame / drawFps;
     if (tq !== drawnAt) {
       drawnAt = tq;
       timeline.evaluate(tq);
-      sk.seed = frame % BOIL_DRAWINGS;
+      sk.seed = frame % boil;
       draw(sk, cast, tq, timeline);
       stage.markDirty();
     }
@@ -109,7 +114,7 @@ export function bootFilm2D<C = Cast2D>(opts: Film2DOptions<C>) {
       await audio.unlock();
       playback.toggle();
     } else if (e.code === 'ArrowRight' || e.code === 'ArrowLeft') {
-      const step = e.shiftKey ? 1 : 1 / DRAW_FPS;
+      const step = e.shiftKey ? 1 : 1 / drawFps;
       playback.pause();
       playback.seek(playback.time + (e.code === 'ArrowRight' ? step : -step));
       lastT = -1;
@@ -189,7 +194,7 @@ export function bootFilm2D<C = Cast2D>(opts: Film2DOptions<C>) {
     __film: {
       seek: (t: number) => (playback.pause(), playback.seek(t), renderAt(t)),
       filmCanvas: stage.film,
-      drawFps: DRAW_FPS,
+      drawFps,
       duration: timeline.duration,
       renderAudioWav,
       fontsReady: () => document.fonts.load(`40px ${FONT_FAMILY}`).then(() => document.fonts.check(`40px ${FONT_FAMILY}`)),
