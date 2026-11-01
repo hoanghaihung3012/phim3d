@@ -1,6 +1,7 @@
 // Builds a single self-contained HTML file (JS + CSS inlined) for sharing a preview,
 // e.g. as a claude.ai Artifact.
-// Usage: node scripts/build-preview.mjs [entry]   (entry = index | apple-test, default index)
+// Usage: node scripts/build-preview.mjs [entry]   (entry = html path without .html, e.g.
+//   index | apple-test | experiments/apple-2d/index; default index)
 // Output: dist-preview/<entry>.preview.html
 import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
 import { execSync } from 'node:child_process';
@@ -9,7 +10,8 @@ const entry = process.argv[2] ?? 'index';
 execSync('npx vite build', { stdio: 'inherit', env: { ...process.env, PREVIEW_ENTRY: entry } });
 const dir = 'dist-preview';
 
-const assets = readdirSync(`${dir}/assets`);
+// Entries in sub-folders put their chunks in nested asset folders, so search recursively.
+const assets = readdirSync(`${dir}/assets`, { recursive: true }).map(String);
 const js = readFileSync(`${dir}/assets/${assets.find((f) => f.endsWith('.js'))}`, 'utf8');
 const css = readFileSync(`${dir}/assets/${assets.find((f) => f.endsWith('.css'))}`, 'utf8');
 if (js.includes('</script')) throw new Error('Bundle contains "</script", cannot inline safely');

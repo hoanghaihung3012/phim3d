@@ -16,6 +16,7 @@ export default defineConfig({
         : {
             index: 'index.html',
             'apple-test': 'apple-test.html', // character test reel for Táo Lém
+            'apple-2d': 'experiments/apple-2d/index.html', // 2D hand-drawn style test
           },
     },
   },
