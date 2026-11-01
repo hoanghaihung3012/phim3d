@@ -198,4 +198,70 @@ export const SYNTHS: Record<string, Synth> = {
       o.frequency.exponentialRampToValueAtTime((i ? 4200 : 3400) * p, at + 0.08);
     });
   },
+
+  /** "Cộp": hard wooden knock of an apple hitting the ground. */
+  sfx_cop(ctx, out, when, cue) {
+    const v = cue.volume ?? 1;
+    const g = envGain(ctx, out, when, 0.8 * v, 0.002, 0.12);
+    const o = osc(ctx, 'sine', g, when, 0.15);
+    o.frequency.setValueAtTime(820, when);
+    o.frequency.exponentialRampToValueAtTime(420, when + 0.08);
+    const bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.value = 2200;
+    bp.Q.value = 3;
+    bp.connect(envGain(ctx, out, when, 0.5 * v, 0.001, 0.05));
+    noise(ctx, bp, when, 0.07);
+  },
+
+  /** "Tạch tạch tạch": tiny running footsteps. */
+  sfx_steps(ctx, out, when, cue) {
+    const v = cue.volume ?? 1;
+    const n = Math.round((cue.duration ?? 0.8) / 0.11);
+    for (let i = 0; i < n; i++) {
+      const at = when + i * 0.11;
+      const g = envGain(ctx, out, at, 0.35 * v, 0.001, 0.035);
+      osc(ctx, 'square', g, at, 0.05).frequency.value = i % 2 ? 1300 : 1100;
+    }
+  },
+
+  /** Placeholder deadpan voice: a flat low "Ờ." */
+  sfx_o(ctx, out, when, cue) {
+    const v = cue.volume ?? 1;
+    const g = envGain(ctx, out, when, 0.35 * v, 0.04, 0.35);
+    const lp = ctx.createBiquadFilter();
+    lp.type = 'lowpass';
+    lp.frequency.value = 900;
+    lp.connect(g);
+    const o = osc(ctx, 'sawtooth', lp, when, 0.4);
+    o.frequency.setValueAtTime(140, when);
+    o.frequency.linearRampToValueAtTime(128, when + 0.38);
+  },
+
+  /** Placeholder "Hử?": short rising question blip. */
+  sfx_hu(ctx, out, when, cue) {
+    const v = cue.volume ?? 1;
+    const g = envGain(ctx, out, when, 0.35 * v, 0.02, 0.28);
+    const lp = ctx.createBiquadFilter();
+    lp.type = 'lowpass';
+    lp.frequency.value = 1200;
+    lp.connect(g);
+    const o = osc(ctx, 'sawtooth', lp, when, 0.32);
+    o.frequency.setValueAtTime(150, when);
+    o.frequency.exponentialRampToValueAtTime(300, when + 0.28);
+  },
+
+  /** "Haizz": a long sigh (breathy noise falling in pitch). */
+  sfx_haizz(ctx, out, when, cue) {
+    const v = cue.volume ?? 1;
+    const dur = cue.duration ?? 1;
+    const g = envGain(ctx, out, when, 0.35 * v, dur * 0.25, dur * 0.75);
+    const bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.Q.value = 2;
+    bp.frequency.setValueAtTime(1600, when);
+    bp.frequency.exponentialRampToValueAtTime(500, when + dur);
+    bp.connect(g);
+    noise(ctx, bp, when, dur);
+  },
 };

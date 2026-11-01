@@ -41,7 +41,7 @@ export class TitleCard {
       fog: false,
     });
     this.mesh = new THREE.Mesh(new THREE.PlaneGeometry(1.6, 0.4), this.material);
-    this.mesh.position.set(0, 0.1, -2);
+    this.mesh.position.set(0, 0.36, -2);
     this.mesh.renderOrder = 999;
     camera.add(this.mesh);
   }

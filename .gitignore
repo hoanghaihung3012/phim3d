@@ -3,3 +3,4 @@ dist/
 *.webm
 *.mp4
 .DS_Store
+dist-preview/

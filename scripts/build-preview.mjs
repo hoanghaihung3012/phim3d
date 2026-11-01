@@ -1,21 +1,26 @@
 // Builds a single self-contained HTML file (JS + CSS inlined) for sharing a preview,
-// e.g. as a claude.ai Artifact. Output: dist/preview.html
+// e.g. as a claude.ai Artifact.
+// Usage: node scripts/build-preview.mjs [entry]   (entry = index | apple-test, default index)
+// Output: dist-preview/<entry>.preview.html
 import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
 import { execSync } from 'node:child_process';
 
-execSync('npx vite build', { stdio: 'inherit' });
+const entry = process.argv[2] ?? 'index';
+execSync('npx vite build', { stdio: 'inherit', env: { ...process.env, PREVIEW_ENTRY: entry } });
+const dir = 'dist-preview';
 
-const assets = readdirSync('dist/assets');
-const js = readFileSync(`dist/assets/${assets.find((f) => f.endsWith('.js'))}`, 'utf8');
-const css = readFileSync(`dist/assets/${assets.find((f) => f.endsWith('.css'))}`, 'utf8');
+const assets = readdirSync(`${dir}/assets`);
+const js = readFileSync(`${dir}/assets/${assets.find((f) => f.endsWith('.js'))}`, 'utf8');
+const css = readFileSync(`${dir}/assets/${assets.find((f) => f.endsWith('.css'))}`, 'utf8');
 if (js.includes('</script')) throw new Error('Bundle contains "</script", cannot inline safely');
 
-const body = readFileSync('dist/index.html', 'utf8').match(/<body>([\s\S]*)<\/body>/)[1];
+const body = readFileSync(`${dir}/${entry}.html`, 'utf8').match(/<body>([\s\S]*)<\/body>/)[1];
 
 // The artifact host wraps the page in its own <html>/<head>/<body>, so emit only
 // title, styles, markup and the script. Downloads are blocked inside artifacts,
 // so the export button is hidden in this preview.
-const html = `<title>Mochi Muốn Bay</title>
+const title = readFileSync(`${entry}.html`, 'utf8').match(/<title>(.*?)<\/title>/)[1];
+const html = `<title>${title}</title>
 <style>
 :root { color-scheme: dark; }
 html, body { height: 100%; }
@@ -28,5 +33,6 @@ ${body.trim()}
 ${js}
 </script>
 `;
-writeFileSync('dist/preview.html', html);
-console.log(`dist/preview.html: ${(html.length / 1024).toFixed(0)} KB`);
+const outFile = `${dir}/${entry}.preview.html`;
+writeFileSync(outFile, html);
+console.log(`${outFile}: ${(html.length / 1024).toFixed(0)} KB`);

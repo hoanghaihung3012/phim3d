@@ -1,3 +1,4 @@
+import type { Apple } from '../characters/Apple';
 import type { Cloud } from '../characters/Cloud';
 import type { Mochi } from '../characters/Mochi';
 import type { Sparrow } from '../characters/Sparrow';
@@ -9,6 +10,7 @@ import type { TitleCard } from '../props/TitleCard';
 /** Everything a scene may animate. */
 export interface Cast {
   mochi: Mochi;
+  apple: Apple;
   cloud: Cloud;
   sparrow: Sparrow;
   balloons: Balloons;

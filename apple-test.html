@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Táo Lém</title>
+  </head>
+  <body>
+    <div id="viewport"></div>
+    <div id="hud">
+      <button id="btn-play" type="button">▶ Play</button>
+      <input id="seek" type="range" min="0" max="1" step="0.01" value="0" />
+      <span id="time">0.00s</span>
+      <span id="scene-label"></span>
+      <button id="btn-record" type="button">⏺ Xuất WebM</button>
+    </div>
+    <script type="module" src="/src/apple-test.ts"></script>
+  </body>
+</html>

@@ -19,6 +19,9 @@ npm run dev        # mở http://localhost:5173
 
 Kiểm tra code: `npm run typecheck` · Build tĩnh: `npm run build` (ra thư mục `dist/`).
 
+**Thử vai Táo Lém:** mở `http://localhost:5173/apple-test.html` (reel ~20s: các khuôn mặt, lá, cuống, chân, nhảy "cộp", xoay vòng).
+**Preview 1 file HTML** (để chia sẻ): `npm run build:preview` (phim) hoặc `npm run build:preview -- apple-test` → `dist-preview/*.preview.html`.
+
 ## Cấu trúc
 
 ```

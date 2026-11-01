@@ -54,6 +54,8 @@ export class Mochi {
   autoBlink = 1;
   /** 1 = hanging from the top (balloon string): lean/sway pivots at the top, not the bottom. */
   hang = 0;
+  /** 0 hides Mochi (e.g. in reels that feature another character). */
+  presence = 1;
 
   constructor() {
     this.root.add(this.body);
@@ -115,6 +117,7 @@ export class Mochi {
   update(t: number) {
     const shakeX = this.shake * Math.sin(t * 90);
     const shakeZ = this.shake * Math.sin(t * 73 + 1.7);
+    this.root.visible = this.presence > 0.001;
     this.root.position.set(this.x + shakeX, this.y, this.z + shakeZ);
     const lean = this.lean + Math.sin(t * Math.PI) * this.sway;
     this.root.rotation.set(this.tilt, this.turn, lean, 'YXZ');
