@@ -1,6 +1,8 @@
 import { AudioManager } from './audio/AudioManager';
 import { Cloud } from './characters/Cloud';
 import { Mochi } from './characters/Mochi';
+import { Sparrow } from './characters/Sparrow';
+import { Balloons } from './props/Balloons';
 import { FILM } from './config/film';
 import { CameraRig } from './core/CameraRig';
 import { Playback } from './core/Playback';
@@ -9,6 +11,7 @@ import { Stage } from './core/Stage';
 import { Timeline } from './core/Timeline';
 import { createHill } from './props/Hill';
 import { createSkyTexture } from './props/Sky';
+import { createSkyClouds } from './props/SkyClouds';
 import { TitleCard } from './props/TitleCard';
 import { SCENES } from './scenes';
 import type { Cast } from './scenes/types';
@@ -17,15 +20,18 @@ import './style.css';
 // ---- Stage & cast -------------------------------------------------------
 const stage = new Stage(document.getElementById('viewport')!);
 stage.scene.background = createSkyTexture();
-stage.scene.add(createHill());
+stage.scene.add(createHill(), createSkyClouds());
 
+const mochi = new Mochi();
 const cast: Cast = {
-  mochi: new Mochi(),
+  mochi,
   cloud: new Cloud(),
+  sparrow: new Sparrow(),
+  balloons: new Balloons(mochi),
   title: new TitleCard(stage.camera, FILM.title),
   cam: new CameraRig(stage.camera),
 };
-stage.scene.add(cast.mochi.root, cast.cloud.root);
+stage.scene.add(cast.mochi.root, cast.cloud.root, cast.sparrow.root, cast.balloons.root);
 
 // ---- Timeline: scenes add keyframes, then cast turns state into transforms.
 const timeline = new Timeline();
@@ -37,6 +43,8 @@ for (const scene of SCENES) {
 timeline.onUpdate((t) => {
   cast.mochi.update(t);
   cast.cloud.update(t);
+  cast.sparrow.update(t);
+  cast.balloons.update(); // after mochi: strings follow Mochi's pose
   cast.title.update();
   cast.cam.update(t);
 });

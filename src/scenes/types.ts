@@ -1,5 +1,7 @@
 import type { Cloud } from '../characters/Cloud';
 import type { Mochi } from '../characters/Mochi';
+import type { Sparrow } from '../characters/Sparrow';
+import type { Balloons } from '../props/Balloons';
 import type { CameraRig } from '../core/CameraRig';
 import type { Timeline } from '../core/Timeline';
 import type { TitleCard } from '../props/TitleCard';
@@ -8,6 +10,8 @@ import type { TitleCard } from '../props/TitleCard';
 export interface Cast {
   mochi: Mochi;
   cloud: Cloud;
+  sparrow: Sparrow;
+  balloons: Balloons;
   title: TitleCard;
   cam: CameraRig;
 }

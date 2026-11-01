@@ -16,6 +16,9 @@ const BODY_RADIUS = 1;
  *                   └─ sphere, eyes, cheeks, ears, mouth
  */
 export class Mochi {
+  /** Point on Mochi's face (root space) where the mouth is, for things it bites/holds. */
+  static readonly MOUTH = new THREE.Vector3(0, 1.0, 1.0);
+
   readonly root = new THREE.Group();
   private readonly body = new THREE.Group();
   private readonly eyes: THREE.Group[] = [];
@@ -49,6 +52,8 @@ export class Mochi {
   mouthOpen = 0;
   /** Turn automatic blinking on (1) or off (0). */
   autoBlink = 1;
+  /** 1 = hanging from the top (balloon string): lean/sway pivots at the top, not the bottom. */
+  hang = 0;
 
   constructor() {
     this.root.add(this.body);
@@ -113,6 +118,12 @@ export class Mochi {
     this.root.position.set(this.x + shakeX, this.y, this.z + shakeZ);
     const lean = this.lean + Math.sin(t * Math.PI) * this.sway;
     this.root.rotation.set(this.tilt, this.turn, lean, 'YXZ');
+    if (this.hang > 0) {
+      // Pivot at the top of the head (y = 2): shift so that point stays put while leaning.
+      const top = 2 * BODY_RADIUS;
+      this.root.position.x += this.hang * top * Math.sin(lean);
+      this.root.position.y += this.hang * top * (1 - Math.cos(lean));
+    }
 
     // Volume-preserving squash: Y = s, X = Z = 1/sqrt(s).
     const s = Math.max(this.squash, 0.05);

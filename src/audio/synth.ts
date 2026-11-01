@@ -156,4 +156,46 @@ export const SYNTHS: Record<string, Synth> = {
     o.frequency.linearRampToValueAtTime(784 * p, when + 0.12);
     o.frequency.linearRampToValueAtTime(659 * p, when + 0.45);
   },
+
+  /** Balloon "PỐP": sharp click + bright noise burst. */
+  sfx_pop(ctx, out, when, cue) {
+    const v = cue.volume ?? 1;
+    const hp = ctx.createBiquadFilter();
+    hp.type = 'highpass';
+    hp.frequency.value = 1200;
+    hp.connect(envGain(ctx, out, when, 0.9 * v, 0.001, 0.09));
+    noise(ctx, hp, when, 0.12);
+    const g = envGain(ctx, out, when, 0.5 * v, 0.001, 0.05);
+    const o = osc(ctx, 'square', g, when, 0.06);
+    o.frequency.setValueAtTime(900, when);
+    o.frequency.exponentialRampToValueAtTime(200, when + 0.05);
+  },
+
+  /** Cartoon falling whistle "fiuuuu...": slow downward slide. */
+  sfx_fall_whistle(ctx, out, when, cue) {
+    const v = cue.volume ?? 1;
+    const dur = cue.duration ?? 1;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, when);
+    g.gain.exponentialRampToValueAtTime(0.25 * v, when + 0.05);
+    g.gain.setValueAtTime(0.25 * v, when + dur - 0.1);
+    g.gain.exponentialRampToValueAtTime(0.0001, when + dur);
+    g.connect(out);
+    const o = osc(ctx, 'sine', g, when, dur);
+    o.frequency.setValueAtTime(2000, when);
+    o.frequency.exponentialRampToValueAtTime(350, when + dur);
+  },
+
+  /** Sparrow "chíp?": two quick rising blips. */
+  sfx_chirp(ctx, out, when, cue) {
+    const v = cue.volume ?? 1;
+    const p = cue.pitch ?? 1;
+    [0, 0.13].forEach((d, i) => {
+      const at = when + d;
+      const g = envGain(ctx, out, at, 0.25 * v, 0.004, 0.08);
+      const o = osc(ctx, 'sine', g, at, 0.1);
+      o.frequency.setValueAtTime(2600 * p, at);
+      o.frequency.exponentialRampToValueAtTime((i ? 4200 : 3400) * p, at + 0.08);
+    });
+  },
 };

@@ -26,4 +26,15 @@ export const CUES: Cue[] = [
   { id: 'sfx_bop', t: 21.45, volume: 0.5 },
   { id: 'sfx_bop', t: 21.8, volume: 0.3, pitch: 1.2 },
   { id: 'sfx_inflate', t: 25.0, duration: 1.4, volume: 0.5 },
+  // Scene 3 - Thử lần 2: Bóng bay
+  { id: 'sfx_bop', t: 30.4, volume: 0.4, pitch: 1.6 },
+  { id: 'sfx_mochi_happy', t: 33.6, volume: 0.7, pitch: 1.2 },
+  { id: 'sfx_mochi_happy', t: 37.5, volume: 0.5, pitch: 1.3 },
+  { id: 'sfx_chirp', t: 44.5, volume: 0.7 },
+  { id: 'sfx_pop', t: 46.0, volume: 1.0 },
+  { id: 'sfx_pop', t: 46.3, volume: 0.55 },
+  { id: 'sfx_pop', t: 46.6, volume: 0.3 },
+  { id: 'sfx_fall_whistle', t: 48.7, duration: 0.8, volume: 0.6 },
+  { id: 'sfx_splat', t: 49.5, volume: 0.6 },
+  { id: 'sfx_chirp', t: 50.0, volume: 0.4, pitch: 0.85 },
 ].sort((a, b) => a.t - b.t);
