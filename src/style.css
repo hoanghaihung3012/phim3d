@@ -1,0 +1,22 @@
+:root {
+  --bg: #2b2233;
+  --hud-bg: rgba(255, 255, 255, 0.9);
+  --accent: #ff8fa3;
+  --text: #4a3b52;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: var(--bg); font-family: system-ui, sans-serif; color: var(--text); }
+#viewport { position: absolute; inset: 0 0 56px 0; display: flex; align-items: center; justify-content: center; }
+#viewport canvas { display: block; max-width: 100%; max-height: 100%; aspect-ratio: 16 / 9; }
+#hud {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 56px;
+  display: flex; align-items: center; gap: 12px; padding: 0 16px; background: var(--hud-bg);
+}
+#hud button {
+  border: 0; border-radius: 999px; padding: 8px 14px; background: var(--accent); color: white;
+  font-weight: 600; cursor: pointer;
+}
+#hud button:disabled { opacity: 0.5; cursor: wait; }
+#seek { flex: 1; accent-color: var(--accent); }
+#time { font-variant-numeric: tabular-nums; min-width: 64px; }
+#scene-label { min-width: 160px; font-size: 13px; opacity: 0.8; }
