@@ -27,6 +27,9 @@ Kiểm tra code: `npm run typecheck` · Build tĩnh: `npm run build` (ra `dist/`
 **Clip mới: "Ảnh gia đình"** (~63 giây, cả nhà Táo: Ba, Mẹ, chị Nấm, Sâu, Vịt): mở
 `http://localhost:5173/anh-gia-dinh.html`. Kịch bản và cách xuất MP4: `docs/episodes/anh-gia-dinh.md`.
 
+**Clip "Thả diều"** (Táo #10, ~50 giây, kiểu truyện tranh #3): `http://localhost:5173/tha-dieu.html`,
+kịch bản ở `docs/episodes/tha-dieu.md`.
+
 Bản 3D cũ vẫn chạy ở `film3d.html` (code trong `src/core`, `src/characters`, `src/props`, `src/scenes`).
 Bản thử nhân vật 2D đầu tiên: `experiments/apple-2d/`.
 

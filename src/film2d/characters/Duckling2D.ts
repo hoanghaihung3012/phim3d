@@ -50,20 +50,46 @@ export class Duckling2D {
   /** Camera raised to the eye (1) or held at the chest (0). */
   aim = 0;
   rec = 0;
+  /**
+   * 1 = the comic-strip look: one round yellow ball (no separate head), front view,
+   * flat bill in the middle, tiny wings and legs. 0 = the 3/4 view with head and body.
+   */
+  round = 0;
+  /** Round look: the right wing is raised holding something (a kite string). */
+  hold = 0;
+  /** Round look: legs kicking in the air. */
+  kick = 0;
+  /** Running (round look): legs cycle and the body bobs. */
+  run = 0;
 
   headTop(): Pt {
     return [this.x + 25 * this.scale * this.flip, this.y - (270 + this.hop) * this.scale];
+  }
+
+  private matrix(t: number): DOMMatrix {
+    const bob = this.run > 0.5 ? 10 * Math.abs(Math.sin(t * 20)) : 0;
+    return new DOMMatrix()
+      .translate(this.x, this.y - (this.hop + bob) * this.scale)
+      .scale(this.scale * this.flip, this.scale)
+      .rotate((this.tilt * 180) / Math.PI);
+  }
+
+  /** World position of the raised wing tip (round look), where a kite string attaches. */
+  handWorld(t: number): Pt {
+    const p = this.matrix(t).transformPoint(new DOMPoint(112, -172));
+    return [p.x, p.y];
   }
 
   draw(sk: Sketch, t: number): void {
     if (this.visible < 0.5) return;
     const c = sk.ctx;
     c.save();
-    const m = new DOMMatrix()
-      .translate(this.x, this.y - this.hop * this.scale)
-      .scale(this.scale * this.flip, this.scale)
-      .rotate((this.tilt * 180) / Math.PI);
-    c.setTransform(sk.camera.multiply(m));
+    c.setTransform(sk.camera.multiply(this.matrix(t)));
+    if (this.round > 0.5) {
+      this.drawRound(sk, t);
+      c.restore();
+      return;
+    }
     this.drawLegs(sk);
     const breath = Math.sin(t * 2.6) * this.breath;
     c.scale(this.sx * (1 - 0.012 * breath), this.sy * (1 + 0.02 * breath));
@@ -73,6 +99,67 @@ export class Duckling2D {
     if (this.camera > 0.5) this.drawCamera(sk, t);
     this.drawNearWing(sk, t);
     c.restore();
+  }
+
+  private drawRound(sk: Sketch, t: number): void {
+    const c = sk.ctx;
+    // Legs: short orange stubs with flat feet; kick in the air or cycle when running.
+    for (const s of [-1, 1]) {
+      let dx = 0;
+      let up = 0;
+      if (this.run > 0.5) {
+        dx = 10 * Math.sin(t * 20 + (s > 0 ? Math.PI : 0));
+        up = Math.max(0, 10 * Math.cos(t * 20 + (s > 0 ? Math.PI : 0)));
+      }
+      if (this.kick > 0.5) {
+        dx = 8 * Math.sin(t * 14 + s);
+        up = 6 + 6 * Math.cos(t * 14 + s);
+      }
+      const hip: Pt = [s * 26, -26];
+      const foot: Pt = [s * 28 + dx, -6 - up];
+      sk.tube([hip, foot], 5101 + s, 12, C.leg, 0.5);
+      sk.shape(ellipse(foot[0] + s * 4, foot[1] + 2, 20, 8, 10), 5104 + s, { fill: C.leg, width: LW * 0.7, amp: 0.5 });
+    }
+    const breath = Math.sin(t * 2.6) * this.breath;
+    c.scale(this.sx * (1 - 0.012 * breath), this.sy * (1 + 0.02 * breath));
+    const cy = -100;
+    // Wings behind the ball edge.
+    const flap = this.wing * (0.8 + 0.4 * Math.sin(t * 18));
+    this.roundWing(sk, -1, flap, 5110);
+    if (this.hold < 0.5) this.roundWing(sk, 1, flap, 5111);
+    sk.shape(ellipse(0, cy, 86, 80, 30), 5112, { fill: C.body });
+    // Curl of hair on top.
+    sk.line([[0, cy - 78], [2, cy - 100], [16, cy - 108], [24, cy - 96], [12, cy - 88], [6, cy - 96]], 5113, { width: LW * 0.8 });
+    if (this.hold > 0.5) {
+      // Raised wing holding the string.
+      sk.shape([[62, cy - 30], [96, cy - 72], [116, cy - 76], [112, cy - 56], [80, cy - 6]], 5114, { fill: C.body, width: LW * 0.85 });
+    }
+    // Face.
+    const lx = this.lookX * 14;
+    let eyes = eyeOf(this.eyes);
+    if (this.blink > 0.5 && eyes === 'dot' && (t + 0.6) % 3.1 < 0.1) eyes = 'closed';
+    drawBlush(sk, lx, cy + 18, 54, 15, this.blush, C.blush, 5120);
+    drawEye(sk, eyes, lx - 28, cy - 14, 7.5, -1, 5122);
+    drawEye(sk, eyes, lx + 28, cy - 14, 7.5, 1, 5123);
+    drawBrows(sk, this.brows, lx, cy - 38, 56, 14, 5124);
+    const open = this.bill > 0.5 || (this.talk > 0.5 && Math.floor(t * 7) % 2 === 0);
+    const by = cy + 16;
+    if (open) {
+      sk.shape(ellipse(lx, by + 6, 30, 16, 14), 5126, { fill: C.billDark, width: LW * 0.7, amp: 0.4 });
+      sk.shape(ellipse(lx, by - 6, 40, 12, 16), 5127, { fill: C.bill, width: LW * 0.8, amp: 0.5 });
+      sk.shape(ellipse(lx, by + 18, 32, 9, 14), 5128, { fill: C.bill, width: LW * 0.8, amp: 0.5 });
+    } else {
+      sk.shape(ellipse(lx, by, 42, 16, 18), 5127, { fill: C.bill, width: LW * 0.8, amp: 0.5 });
+      sk.line([[lx - 26, by + 1], [lx, by + 3], [lx + 26, by + 1]], 5129, { width: LW * 0.5 });
+    }
+    if (this.sweat > 0) drawSweat(sk, 70, cy - 60 + this.sweat * 24, 13, 5130);
+  }
+
+  private roundWing(sk: Sketch, s: number, lift: number, id: number): void {
+    const base: Pt = [s * 74, -100];
+    const a = 0.5 - lift * 1.4;
+    const tip: Pt = [base[0] + s * Math.cos(a) * 36, base[1] + Math.sin(a) * 36];
+    sk.shape([[base[0], base[1] - 22], [tip[0], tip[1]], [base[0] - s * 4, base[1] + 22]], id, { fill: C.body, width: LW * 0.85 });
   }
 
   private drawLegs(sk: Sketch): void {

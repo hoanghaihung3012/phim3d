@@ -1,7 +1,8 @@
 import type { Pt } from '../../../film2d/doodle/Sketch';
 import type { Keyer } from '../../../film2d/Keyer';
 import type { FaceEye, FaceMouth } from '../../../film2d/characters/face';
-import type { Bubble } from '../../../film2d/props/Bubbles';
+import type { Cue } from '../../../audio/cues';
+import type { Bubble, Bubbles } from '../../../film2d/props/Bubbles';
 import type { EpisodeCast } from '../cast';
 
 export { cut, pan, shake } from '../../../film2d/scenes/helpers';
@@ -35,7 +36,7 @@ export function face(k: Keyer, t: number, who: Face, eyes?: FaceEye, mouth?: Fac
  */
 export function say(
   k: Keyer,
-  cast: EpisodeCast,
+  cast: { bubbles: Bubbles; cues: Cue[] },
   who: Speaker | null,
   voice: Voice,
   t0: number,
