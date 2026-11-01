@@ -1,0 +1,10 @@
+body { margin: 0; padding: 24px 16px 48px; background: #F4F5F8; color: #3A3F4E;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 1100px; margin: 0 auto; display: grid; gap: 20px; }
+h1 { font-family: Itim, "Comic Sans MS", sans-serif; font-weight: 400; margin: 0; }
+.stack { position: relative; }
+.stack canvas { display: block; width: 100%; height: auto; }
+.stack canvas + canvas { position: absolute; inset: 0; }
+.profile { max-width: 360px; }
+.profile canvas:first-child { border-radius: 50%; }
+label { font-size: 15px; }
