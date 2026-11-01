@@ -264,4 +264,81 @@ export const SYNTHS: Record<string, Synth> = {
     bp.connect(g);
     noise(ctx, bp, when, dur);
   },
+  /** "Rắc": a dry twig snap (short bright noise click). */
+  sfx_snap(ctx, out, when, cue) {
+    const v = cue.volume ?? 1;
+    const hp = ctx.createBiquadFilter();
+    hp.type = 'highpass';
+    hp.frequency.value = 2500;
+    hp.connect(envGain(ctx, out, when, 0.9 * v, 0.001, 0.06));
+    noise(ctx, hp, when, 0.08);
+    const g = envGain(ctx, out, when + 0.03, 0.3 * v, 0.001, 0.04);
+    osc(ctx, 'square', g, when + 0.03, 0.05).frequency.value = 1800;
+  },
+
+  /** Crickets: pulsed high chirps over `duration` (the awkward-silence gag). */
+  sfx_crickets(ctx, out, when, cue) {
+    const v = cue.volume ?? 1;
+    const dur = cue.duration ?? 3;
+    for (let at = 0; at < dur; at += 0.55) {
+      for (let p = 0; p < 3; p++) {
+        const s = when + at + p * 0.045;
+        const g = envGain(ctx, out, s, 0.12 * v, 0.004, 0.03);
+        osc(ctx, 'sine', g, s, 0.04).frequency.value = 4400;
+      }
+    }
+  },
+
+  /** Sad trombone "wah wah wah waaah": four falling notes. */
+  sfx_trombone(ctx, out, when, cue) {
+    const v = cue.volume ?? 1;
+    const notes = [311, 294, 277, 262];
+    notes.forEach((f, i) => {
+      const s = when + i * 0.42;
+      const len = i === 3 ? 1.0 : 0.36;
+      const g = envGain(ctx, out, s, 0.3 * v, 0.03, len);
+      const lp = ctx.createBiquadFilter();
+      lp.type = 'lowpass';
+      lp.frequency.value = 1100;
+      lp.connect(g);
+      const o = osc(ctx, 'sawtooth', lp, s, len + 0.05);
+      o.frequency.setValueAtTime(f, s);
+      if (i === 3) {
+        const lfo = ctx.createOscillator();
+        const lg = ctx.createGain();
+        lfo.frequency.value = 6;
+        lg.gain.value = 8;
+        lfo.connect(lg).connect(o.frequency);
+        lfo.start(s);
+        lfo.stop(s + len + 0.1);
+      }
+    });
+  },
+
+  /** "BÉP!": flat slap of a plank (noise burst + low thump). */
+  sfx_smack(ctx, out, when, cue) {
+    const v = cue.volume ?? 1;
+    const p = cue.pitch ?? 1;
+    const bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.value = 1400 * p;
+    bp.Q.value = 0.8;
+    bp.connect(envGain(ctx, out, when, 1.0 * v, 0.001, 0.12));
+    noise(ctx, bp, when, 0.14);
+    const g = envGain(ctx, out, when, 0.7 * v, 0.002, 0.18);
+    const o = osc(ctx, 'sine', g, when, 0.2);
+    o.frequency.setValueAtTime(180 * p, when);
+    o.frequency.exponentialRampToValueAtTime(70 * p, when + 0.18);
+  },
+
+  /** "Phụp": soft cushiony landing (low-passed noise puff). */
+  sfx_poof(ctx, out, when, cue) {
+    const v = cue.volume ?? 1;
+    const lp = ctx.createBiquadFilter();
+    lp.type = 'lowpass';
+    lp.frequency.setValueAtTime(1200, when);
+    lp.frequency.exponentialRampToValueAtTime(200, when + 0.35);
+    lp.connect(envGain(ctx, out, when, 0.8 * v, 0.02, 0.35));
+    noise(ctx, lp, when, 0.4);
+  },
 };

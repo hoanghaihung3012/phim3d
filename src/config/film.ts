@@ -1,6 +1,6 @@
 /** Global film settings (from docs/script.md, section 3). */
 export const FILM = {
-  title: 'Mochi Muốn Bay',
+  title: 'Táo Muốn Bay',
   width: 1920,
   height: 1080,
   fps: 30,

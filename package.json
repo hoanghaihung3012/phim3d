@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Mochi Muốn Bay - phim hoạt hình 3D ngắn dựng bằng Three.js",
+  "description": "Táo Muốn Bay - phim hoạt hình 2D vẽ tay ngắn, dựng bằng Three.js + Canvas 2D",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
