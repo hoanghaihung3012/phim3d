@@ -60,8 +60,8 @@ export const ACTIONS: Action[] = [
       mouth(m, 'o');
       m.armL = m.armR = 2.0;
       m.bendL = m.bendR = -0.6;
-      // Cap pops straight up off the head, then drops back a little late.
-      m.capLift = t < 0.6 ? 70 : t < 0.7 ? 20 : 0;
+      // The cap stays on: it just stretches tall for a beat.
+      m.capSquash = t < 0.6 ? 1.18 : t < 0.7 ? 0.92 : 1;
       m.y = -30 * hop(t, 0.15, 0.4);
       if (t > 0.7) { m.sweat = seg(t, 0.7, 2.2); m.armL = m.armR = 1.1; }
     },
@@ -94,7 +94,7 @@ export const ACTIONS: Action[] = [
         eyes(m, t > 0.4 ? 'closed' : 'half');
         mouth(m, 'o');
         m.tilt = -0.08 * k;
-        m.capLift = 18 * k;
+        m.capSquash = 1 + 0.08 * k;
         m.sy = 1 + 0.06 * k;
         return;
       }
@@ -103,7 +103,7 @@ export const ACTIONS: Action[] = [
       m.tilt = t < 1.3 ? 0.12 : 0;
       m.sy = t < 1.25 ? 0.86 : 1;
       m.sx = t < 1.25 ? 1.1 : 1;
-      m.capLift = t < 1.25 ? 90 : t < 1.4 ? 30 : 0;
+      m.capSquash = t < 1.25 ? 1.2 : t < 1.4 ? 0.9 : 1;
       m.spores = seg(t, 1.1, 2.4) * 0.999;
       if (t > 2.2) { eyes(m, 'dot'); mouth(m, 'flat'); m.blush = 1.5; }
     },

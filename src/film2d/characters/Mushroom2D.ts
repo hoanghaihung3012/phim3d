@@ -1,7 +1,7 @@
 // Nấm: a little mushroom in the same doodle style as Táo Lém (thick dark ink, flat pastel
 // fills, dot eyes, blush). Lavender cap with white spots, a chubby cream stem with the face,
-// noodle arms and stubby legs. The cap is its main "acting" part: it pops up when startled,
-// pulls down when shy and droops when sleepy.
+// noodle arms and stubby legs. The cap stays on the head; it acts by stretching when startled,
+// pulling down when shy and drooping when sleepy.
 import { Sketch, ellipse, quad, type Pt } from '../doodle/Sketch';
 import { FONT_FAMILY, INK, LW } from '../doodle/style';
 
@@ -25,7 +25,8 @@ const STEM_TOP = -225;
 const CAP_BASE = -205; // underside of the cap
 const CAP_RX = 190;
 const CAP_H = 165;
-const FACE_Y = -135;
+const FACE_Y = -102;
+const SHOULDER_Y = -122;
 
 const ID = {
   legL: 1101, legR: 1102, stem: 1103, armL: 1104, armR: 1105, cap: 1106, gills: 1107,
@@ -50,7 +51,7 @@ export class Mushroom2D {
   blush = 1;
   blink = 1;
   // Cap acting
-  capLift = 0; // px up (startled)
+  capLift = 0; // px up; keep small: the cap never leaves the head
   capDown = 0; // px down over the eyes (shy)
   capTilt = 0; // radians (sleepy droop / cheeky)
   capSquash = 1; // < 1 flattens, > 1 stretches
@@ -154,7 +155,7 @@ export class Mushroom2D {
 
   private drawArms(sk: Sketch, t: number): void {
     for (const [side, ang, bend, id] of [[-1, this.armL, this.bendL, ID.armL], [1, this.armR, this.bendR, ID.armR]] as const) {
-      const sh: Pt = [side * 76, FACE_Y + 10];
+      const sh: Pt = [side * 80, SHOULDER_Y];
       const a = ang + 0.04 * Math.sin(t * 1.9 + side);
       const len = 80;
       const elbow: Pt = [sh[0] + side * Math.sin(a) * len * 0.55, sh[1] + Math.cos(a) * len * 0.55];
@@ -166,7 +167,7 @@ export class Mushroom2D {
 
   private drawCap(sk: Sketch, t: number): void {
     const c = sk.ctx;
-    const base = CAP_BASE - this.capLift + this.capDown;
+    const base = CAP_BASE - Math.min(this.capLift, 8) + this.capDown;
     c.save();
     c.translate(0, base);
     c.rotate(this.capTilt + (this.run > 0.5 ? Math.sin(t * 20) * 0.04 : 0));
