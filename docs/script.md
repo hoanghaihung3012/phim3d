@@ -66,7 +66,7 @@ Tổng thời lượng: **~95 giây**. Mốc thời gian tính theo giây từ �
 | Thời gian | Camera | Hành động | Âm thanh |
 |-----------|--------|-----------|----------|
 | 0:00–0:04 | Wide shot từ trên cao, dolly xuống chậm về phía đồi | Mở màn: trời xanh, mây trôi. Title "Mochi Muốn Bay" fade in/out. | Nhạc nền nhẹ (ukulele/glockenspiel) bắt đầu. Chim hót. |
-| 0:04–0:09 | Medium shot ngang tầm Mochi | Mochi nằm ngửa trên cỏ (thân scale dẹt 1.3/0.75/1.3), ngón chân… à không, cả người đung đưa theo nhịp. Mắt nhìn lên trời. | Mochi ngân "mo~ mo~". |
+| 0:04–0:09 | Medium shot ngang tầm Mochi | Mochi nằm ngửa trên cỏ (thân scale dẹt 1.3/0.75/1.3), cả người đung đưa theo nhịp nhạc. Mắt nhìn lên trời. | Mochi ngân "mo~ mo~". |
 | 0:09–0:14 | Over-the-shoulder từ sau Mochi nhìn lên trời | Bé Mây bay ngang, vẫy tay (một sphere nhỏ nhô ra), cười khúc khích rồi trôi lên cao. Mochi bật dậy (squash → stretch mạnh), mắt lấp lánh. | Chuông gió. Hiệu ứng "ting!" khi mắt Mochi sáng. |
 
 **Gag:** Không có; thiết lập mục tiêu: *Mochi muốn lên chỗ Bé Mây.*
