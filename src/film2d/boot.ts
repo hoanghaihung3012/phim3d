@@ -5,7 +5,7 @@ import { FILM } from '../config/film';
 import { Playback } from '../core/Playback';
 import { Recorder } from '../core/Recorder';
 import { Timeline } from '../core/Timeline';
-import { createCast, type Scene2D } from './cast';
+import { createCast, type Cast2D, type Scene2D } from './cast';
 import { Sketch } from './doodle/Sketch';
 import { FONT_FAMILY, FONT_URL } from './doodle/style';
 import { drawFrame } from './drawFrame';
@@ -17,13 +17,26 @@ export const DRAW_FPS = 12;
 /** Number of slightly different redraws the line boil cycles through. */
 const BOIL_DRAWINGS = 3;
 
-export interface Film2DOptions {
-  scenes: Scene2D[];
-  cues: Cue[];
-  fileName?: string;
+/** A scene built with absolute film times against any cast. */
+export interface FilmScene<C> {
+  id: string;
+  title: string;
+  start: number;
+  end: number;
+  build(k: Keyer, cast: C): void;
 }
 
-export function bootFilm2D(opts: Film2DOptions) {
+export interface Film2DOptions<C = Cast2D> {
+  scenes: (FilmScene<C> | Scene2D)[];
+  cues: Cue[];
+  fileName?: string;
+  /** Cast factory (default: the "Táo Muốn Bay" cast). */
+  createCast?: () => C;
+  /** Draws one frame (default: the "Táo Muốn Bay" frame). */
+  drawFrame?: (sk: Sketch, cast: C, t: number, timeline: Timeline) => void;
+}
+
+export function bootFilm2D<C = Cast2D>(opts: Film2DOptions<C>) {
   const font = document.createElement('link');
   font.rel = 'stylesheet';
   font.href = FONT_URL;
@@ -31,12 +44,13 @@ export function bootFilm2D(opts: Film2DOptions) {
 
   const stage = new Stage2D(document.getElementById('viewport')!);
   const sk = new Sketch(stage.ctx);
-  const cast = createCast();
+  const cast = (opts.createCast ?? (createCast as unknown as () => C))();
+  const draw = opts.drawFrame ?? (drawFrame as unknown as (sk: Sketch, cast: C, t: number, tl: Timeline) => void);
 
   const timeline = new Timeline();
   const keyer = new Keyer(timeline);
   for (const scene of opts.scenes) {
-    scene.build(keyer, cast);
+    (scene as FilmScene<C>).build(keyer, cast);
     timeline.mark(scene.start, scene.title);
     timeline.duration = Math.max(timeline.duration, scene.end);
   }
@@ -53,7 +67,7 @@ export function bootFilm2D(opts: Film2DOptions) {
       drawnAt = tq;
       timeline.evaluate(tq);
       sk.seed = frame % BOIL_DRAWINGS;
-      drawFrame(sk, cast, tq);
+      draw(sk, cast, tq, timeline);
       stage.markDirty();
     }
     stage.render();

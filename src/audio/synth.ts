@@ -341,4 +341,127 @@ export const SYNTHS: Record<string, Synth> = {
     lp.connect(envGain(ctx, out, when, 0.8 * v, 0.02, 0.35));
     noise(ctx, lp, when, 0.4);
   },
+
+  // ---- "Ảnh gia đình" ------------------------------------------------------
+
+  /** Camera shutter "tách": two dry clicks and a short flash whine. */
+  sfx_shutter(ctx, out, when, cue) {
+    const v = cue.volume ?? 1;
+    for (const d of [0, 0.07]) {
+      const hp = ctx.createBiquadFilter();
+      hp.type = 'highpass';
+      hp.frequency.value = 3000;
+      hp.connect(envGain(ctx, out, when + d, 0.8 * v, 0.001, 0.05));
+      noise(ctx, hp, when + d, 0.07);
+    }
+    const g = envGain(ctx, out, when, 0.06 * v, 0.01, 0.35);
+    const o = osc(ctx, 'sine', g, when, 0.4);
+    o.frequency.setValueAtTime(2400, when);
+    o.frequency.exponentialRampToValueAtTime(5200, when + 0.35);
+  },
+
+  /** "Hắt xì!": a breathy burst with a vocal "chi" on top. */
+  sfx_sneeze(ctx, out, when, cue) {
+    const v = cue.volume ?? 1;
+    const bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.setValueAtTime(3200, when);
+    bp.frequency.exponentialRampToValueAtTime(1400, when + 0.35);
+    bp.Q.value = 1.2;
+    bp.connect(envGain(ctx, out, when, 0.9 * v, 0.01, 0.35));
+    noise(ctx, bp, when, 0.4);
+    const lp = ctx.createBiquadFilter();
+    lp.type = 'lowpass';
+    lp.frequency.value = 1500;
+    lp.connect(envGain(ctx, out, when, 0.3 * v, 0.01, 0.2));
+    const o = osc(ctx, 'sawtooth', lp, when, 0.22);
+    o.frequency.setValueAtTime(260, when);
+    o.frequency.exponentialRampToValueAtTime(140, when + 0.2);
+  },
+
+  /** Clock-like ticks over `duration` (holding a smile for the video). */
+  sfx_ticks(ctx, out, when, cue) {
+    const v = cue.volume ?? 1;
+    const dur = cue.duration ?? 3;
+    for (let at = 0, i = 0; at < dur; at += 0.5, i++) {
+      const g = envGain(ctx, out, when + at, 0.25 * v, 0.002, 0.04);
+      osc(ctx, 'square', g, when + at, 0.05).frequency.value = i % 2 ? 1500 : 1900;
+    }
+  },
+
+  /** Fast-forward "tua tua": quick clicks slowing down over `duration`. */
+  sfx_scrub(ctx, out, when, cue) {
+    const v = cue.volume ?? 1;
+    const dur = cue.duration ?? 2;
+    let at = 0;
+    let gap = 0.04;
+    while (at < dur) {
+      const g = envGain(ctx, out, when + at, 0.2 * v, 0.002, 0.025);
+      osc(ctx, 'triangle', g, when + at, 0.04).frequency.value = 2200;
+      at += gap;
+      gap *= 1.09;
+    }
+  },
+
+  /** Light ukulele-ish music bed (C - Am - F - G), plucked arpeggios + soft bass. */
+  music_bed(ctx, out, when, cue) {
+    const v = cue.volume ?? 1;
+    const dur = cue.duration ?? 8;
+    const beat = 60 / 112;
+    const chords = [
+      [261.6, 329.6, 392.0, 523.3],
+      [220.0, 261.6, 329.6, 440.0],
+      [174.6, 220.0, 261.6, 349.2],
+      [196.0, 246.9, 293.7, 392.0],
+    ];
+    const pattern = [0, 2, 1, 3, 2, 1, 3, 2];
+    const bus = ctx.createGain();
+    bus.gain.setValueAtTime(0.0001, when);
+    bus.gain.exponentialRampToValueAtTime(1, when + 0.3);
+    bus.gain.setValueAtTime(1, when + Math.max(0.3, dur - 0.4));
+    bus.gain.exponentialRampToValueAtTime(0.0001, when + dur);
+    bus.connect(out);
+    for (let i = 0; i * beat * 0.5 < dur; i++) {
+      const at = when + i * beat * 0.5;
+      const chord = chords[Math.floor(i / 8) % 4];
+      const f = chord[pattern[i % 8]];
+      const g = envGain(ctx, bus, at, 0.09 * v, 0.004, 0.32);
+      osc(ctx, 'triangle', g, at, 0.36).frequency.value = f * 2;
+      if (i % 4 === 0) {
+        const bg = envGain(ctx, bus, at, 0.16 * v, 0.01, beat * 1.6);
+        osc(ctx, 'sine', bg, at, beat * 1.7).frequency.value = chord[0] / 2;
+      }
+    }
+  },
+
+  sfx_babble_ba: babble(150, 0.13, 'triangle', 0.25),
+  sfx_babble_me: babble(290, 0.12, 'triangle', 0.3),
+  sfx_babble_nam: babble(360, 0.09, 'triangle', 0.35),
+  sfx_babble_vit: babble(420, 0.1, 'square', 0.3),
+  /** Táo: low and perfectly flat, like his face. */
+  sfx_babble_tao: babble(135, 0.16, 'sawtooth', 0),
 };
+
+/**
+ * Placeholder "voice": syllable blips around a base pitch (like comic gibberish), so lines
+ * have a rhythm before real voice recordings exist. `spread` is the pitch variation.
+ */
+function babble(base: number, syllable: number, type: OscillatorType, spread: number): Synth {
+  return (ctx, out, when, cue) => {
+    const v = cue.volume ?? 1;
+    const dur = cue.duration ?? 1;
+    const lp = ctx.createBiquadFilter();
+    lp.type = 'lowpass';
+    lp.frequency.value = type === 'square' ? 1800 : 1400;
+    lp.connect(out);
+    for (let i = 0, at = 0; at < dur; i++, at += syllable) {
+      const r = Math.sin(i * 12.9898 + base) * 43758.5453;
+      const k = (r - Math.floor(r)) * 2 - 1;
+      const f = base * (1 + spread * k) * (at > dur - syllable * 1.5 ? 0.9 : 1);
+      const g = envGain(ctx, lp, when + at, 0.22 * v, 0.012, syllable * 0.75);
+      const o = osc(ctx, type, g, when + at, syllable * 0.85);
+      o.frequency.setValueAtTime(f, when + at);
+      o.frequency.linearRampToValueAtTime(f * (spread ? 0.94 : 0.99), when + at + syllable * 0.8);
+    }
+  };
+}

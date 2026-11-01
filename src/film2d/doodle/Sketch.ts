@@ -184,3 +184,11 @@ export function scallop(x: number, y: number, rx: number, ry: number, lobes: num
 export function rand(n: number): number {
   return hash(n * 13.37 + 0.123);
 }
+
+/** Rectangle outline with softly rounded corners that survive the smoothing in trace(). */
+export function box(x0: number, y0: number, x1: number, y1: number, r = 14): Pt[] {
+  return [
+    [x0 + r, y0], [(x0 + x1) / 2, y0], [x1 - r, y0], [x1, y0 + r], [x1, (y0 + y1) / 2], [x1, y1 - r],
+    [x1 - r, y1], [(x0 + x1) / 2, y1], [x0 + r, y1], [x0, y1 - r], [x0, (y0 + y1) / 2], [x0, y0 + r],
+  ];
+}

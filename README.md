@@ -24,6 +24,9 @@ npm run dev        # mở http://localhost:5173
 Kiểm tra code: `npm run typecheck` · Build tĩnh: `npm run build` (ra `dist/`)
 · Preview 1 file HTML để chia sẻ: `npm run build:preview` → `dist-preview/index.preview.html`.
 
+**Clip mới: "Ảnh gia đình"** (~63 giây, cả nhà Táo: Ba, Mẹ, chị Nấm, Sâu, Vịt): mở
+`http://localhost:5173/anh-gia-dinh.html`. Kịch bản và cách xuất MP4: `docs/episodes/anh-gia-dinh.md`.
+
 Bản 3D cũ vẫn chạy ở `film3d.html` (code trong `src/core`, `src/characters`, `src/props`, `src/scenes`).
 Bản thử nhân vật 2D đầu tiên: `experiments/apple-2d/`.
 
