@@ -1,0 +1,5 @@
+body { margin: 0; padding: 24px 16px 48px; background: #F4F5F8; color: #3A3F4E;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 540px; margin: 0 auto; display: grid; gap: 20px; }
+h1 { font-family: Itim, "Comic Sans MS", sans-serif; font-weight: 400; margin: 0; }
+.post canvas { display: block; width: 100%; height: auto; border-radius: 8px; }

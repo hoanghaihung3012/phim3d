@@ -23,6 +23,7 @@ export default defineConfig({
             'apple-2d': 'experiments/apple-2d/index.html', // 2D hand-drawn style test
             'mushroom-2d': 'experiments/mushroom-2d/index.html', // Nấm character test
             'fb-page': 'fb-page.html', // Facebook page profile picture + cover
+            'fb-post': 'fb-post.html', // Facebook page posts (first post: "Hello mọi người")
           },
     },
   },

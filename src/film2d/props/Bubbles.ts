@@ -24,6 +24,8 @@ export interface Bubble {
 
 export class Bubbles {
   list: Bubble[] = [];
+  /** Frame the bubbles are kept inside (the film frame by default; posters pass their own size). */
+  bounds: { width: number; height: number } = { width: FILM.width, height: FILM.height };
 
   add(b: Bubble): void {
     this.list.push(b);
@@ -45,10 +47,10 @@ export class Bubbles {
       const h = lines.length * lh + size * 0.8;
       // Pop: first drawing slightly bigger.
       const pop = t - b.t0 < 1 / 12 ? 1.08 : 1;
-      let cx = b.screen ? b.screen[0] * FILM.width : a.x + (b.dx ?? 0);
-      let cy = b.screen ? b.screen[1] * FILM.height : a.y + (b.dy ?? -h / 2 - 50);
-      cx = Math.min(FILM.width - w / 2 - 24, Math.max(w / 2 + 24, cx));
-      cy = Math.min(FILM.height - h / 2 - 24, Math.max(h / 2 + 24, cy));
+      let cx = b.screen ? b.screen[0] * this.bounds.width : a.x + (b.dx ?? 0);
+      let cy = b.screen ? b.screen[1] * this.bounds.height : a.y + (b.dy ?? -h / 2 - 50);
+      cx = Math.min(this.bounds.width - w / 2 - 24, Math.max(w / 2 + 24, cx));
+      cy = Math.min(this.bounds.height - h / 2 - 24, Math.max(h / 2 + 24, cy));
 
       c.save();
       c.translate(cx, cy);
