@@ -4,3 +4,5 @@ dist/
 *.mp4
 .DS_Store
 dist-preview/
+comics/build/
+comics/out/render/

@@ -10,7 +10,9 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "build:preview": "node scripts/build-preview.mjs",
-    "export:mp4": "node scripts/export-mp4.mjs"
+    "export:mp4": "node scripts/export-mp4.mjs",
+    "comics:build": "vite build -c comics/vite.config.mjs",
+    "comics:render": "npm run comics:build && node comics/render.cjs"
   },
   "dependencies": {
     "three": "^0.187.0"
