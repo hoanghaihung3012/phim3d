@@ -1146,7 +1146,7 @@ export function strip5(c: CanvasRenderingContext2D): void {
   panelFrame(sk, py(2), () => rant(['ĐỂ CHỨNG MINH LÀ KHÔNG CÓ ĐIỆN THOẠI', 'TỤI MÌNH VẪN ĐIỂM KÉM.'], true, 0, 'Ờ.'));
 
   c.setTransform(1, 0, 0, 1, 0, 0);
-  text(c, W2 - 30, c.canvas.height - 18, 'Ờ', 26, 'right');
+  text(c, W2 - 30, c.canvas.height - 18, 'Táo Ờ', 26, 'right');
 }
 
 // ======================= Strip #6: "Thèm gì" (with Ba & Mẹ) =======================
