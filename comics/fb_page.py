@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 def build(out: str, title: str, caption: str, *imgs: str) -> None:
-    brand, rest = title.split(' #', 1)
+    brand, _, rest = title.partition(' · ')
     figs = []
     n_fb = sum('tao-truyen' not in Path(p).name for p in imgs)
     for i, p in enumerate(imgs):
@@ -33,7 +33,7 @@ button{{justify-self:center;padding:10px 20px;border:3px solid #3A3F4B;border-ra
 pre{{white-space:pre-wrap;background:#fff;color:#3A3F4E;border:1px solid var(--line);border-radius:6px;padding:12px;font-family:inherit;margin:0}}
 </style>
 <main>
-<header><h1><span>{html.escape(brand)}</span> #{html.escape(rest)}</h1><p class="sub">{intro}</p>{extra}</header>
+<header><h1><span>{html.escape(brand)}</span> · {html.escape(rest)}</h1><p class="sub">{intro}</p>{extra}</header>
 {''.join(figs)}
 <h2>Gợi ý caption</h2>
 <pre id="cap"></pre>

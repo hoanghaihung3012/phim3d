@@ -443,7 +443,8 @@ export function strip(c: CanvasRenderingContext2D): void {
   sk.seed = 2;
   sk.setCamera(new DOMMatrix());
   uid = 3000;
-  text(c, PW / 2, 80, 'TÁO  #1 · ĐI BƠI', 44);
+  text(c, PW / 2, 80, 'ĐI BƠI', 44);
+  text(c, PW - 30, c.canvas.height - 18, 'Táo Ờ', 26, 'right');
   sk.line([[PW / 2 - 150, 104], [PW / 2 + 150, 106]], nid(), { width: LW * 0.5, amp: 1.5 });
   const G = (i: number) => TOP + PH * i + PH - 40;
 
