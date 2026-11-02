@@ -262,16 +262,6 @@ export class AppleDoodle {
         sk.blob(s * R * 0.52 + lx * 0.4, FACE_Y + 46, 28 * Math.min(1.25, p.blush), 15, id, this.palette.blush, 1);
       }
       c.globalAlpha = 1;
-      // Shy: little hatch strokes over each cheek once the blush is strong.
-      if (p.blush > 1.6) {
-        for (const s of [-1, 1]) {
-          const bx = s * R * 0.52 + lx * 0.4;
-          for (let i = -1; i <= 1; i++) {
-            const hx = bx + i * 14;
-            sk.line([[hx + 6, FACE_Y + 36], [hx - 4, FACE_Y + 56]], 90 + i + s * 3, { width: LW * 0.4, amp: 0.5 });
-          }
-        }
-      }
     }
 
     for (const [s, id, lid] of [[-1, ID.eyeL, ID.lidL], [1, ID.eyeR, ID.lidR]] as const) {

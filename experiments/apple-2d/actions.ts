@@ -165,22 +165,19 @@ export const ACTIONS: Action[] = [
     },
   },
   {
-    id: 'shy', label: 'Ngại', key: '9', duration: 3,
-    captions: [[0.2, '(Có người nhìn Táo.)'], [1.4, '...']],
+    id: 'nocam', label: 'Đừng quay', key: '9', duration: 3,
+    captions: [[0.2, '(Có người quay phim Táo.)'], [1.4, '...Đừng quay.']],
     pose: (t, T) => {
       const p = idle(T);
       if (t < 1.0) return p;
-      // Pink cheeks, eyes slide away, arms tuck in, a tiny shuffle of one foot.
-      p.blush = 1 + Math.min(1, (t - 1.0) * 3);
-      p.lookX = -1;
-      p.lookY = 0.5;
-      p.tilt = -0.04;
-      p.armL = p.armR = 0.6;
-      p.liftR = t > 1.6 && (t * 4) % 1 < 0.5 ? 8 : 0;
+      // Not shy, just does not like cameras: half-lidded look, hand up over the lens, looks away.
+      p.eyes = 'half';
+      p.armR = 2.5;
+      if (t > 1.4) p.lookX = -1;
       return p;
     },
   },
 ];
 
 /** Order used by the auto demo. */
-export const DEMO_ORDER = ['calm', 'side', 'sigh', 'shock', 'smug', 'run', 'drop', 'shy', 'happy'];
+export const DEMO_ORDER = ['calm', 'side', 'sigh', 'shock', 'smug', 'run', 'drop', 'nocam', 'happy'];

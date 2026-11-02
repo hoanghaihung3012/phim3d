@@ -42,19 +42,19 @@ export const scene05Friend: Scene2D = {
     k.set(81.6, apple, { legs: 0, liftL: 0, liftR: 0 });
     k.to(82.0, 82.6, cloud, { sy: 0.8, sx: 1.12 });
 
-    // 84-88: they rise. The only real smile of the film: small, quiet. Then Táo notices the camera,
-    // gets shy (pink cheeks, looks away) and gives the tiniest wave.
+    // 84-88: they rise. The only real smile of the film: small, quiet. Then Táo notices the camera:
+    // the smile goes, a hand comes up to block the lens. Once it thinks we stopped, the smile returns.
     k.to(84, 88, cloud, { y: -900, sx: 1, sy: 1 }, 'inOutSine');
     k.to(84, 88, apple, { y: -925 }, 'inOutSine');
     k.to(84, 88, cloud, { shadow: 0 }, 'linear');
     pan(k, 84, 88, cam, X + 210, -980, 1.5);
     k.face(85, apple, 'dot', 'smile');
     k.set(85, apple, { sparkle: 1, blush: 1.3, leaf: 0.6, flap: 1 });
-    k.face(86, apple, 'dot', 'flat');
-    k.set(86, apple, { armR: 2.3, blush: 2, lookX: -1, lookY: 0.5, sparkle: 0 });
-    k.set(86.2, apple, { armR: 2.6 }).set(86.4, apple, { armR: 2.3 }).set(86.6, apple, { armR: 2.6 });
-    k.face(86.8, apple, 'dot', 'smile');
-    k.set(86.8, apple, { armR: 0.25, lookX: 0, lookY: 0, blush: 1.5 });
+    k.face(86, apple, 'half', 'flat');
+    k.set(86, apple, { sparkle: 0, lookX: -1 });
+    k.set(86.2, apple, { armR: 2.5 });
+    k.face(87.4, apple, 'dot', 'smile');
+    k.set(87.4, apple, { armR: 0.25, lookX: 0 });
     k.to(86, 88, sky, { dusk: 0.6 }, 'linear');
   },
 };

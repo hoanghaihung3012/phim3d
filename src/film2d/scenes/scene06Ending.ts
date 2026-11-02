@@ -56,7 +56,6 @@ export const scene06Ending: Scene2D = {
     k.to(95, 95.8, fx, { fade: 1 }, 'linear');
     texts.screen.push(
       { t0: 96, t1: 100, text: 'Hết', x: 0.5, y: 0.42, size: 150, color: '#FBFAF6', bounce: true },
-      { t0: 96.6, t1: 100, text: 'Táo Muốn Bay · phim vẽ tay bằng Three.js', x: 0.5, y: 0.6, size: 40, color: '#FBFAF6' },
     );
     texts.captions.push({ t0: 97.6, t1: 99.0, text: 'Ờ.' });
   },
