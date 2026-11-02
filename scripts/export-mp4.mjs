@@ -6,10 +6,12 @@
 //
 // Usage:
 //   npm run build:preview
-//   node scripts/export-mp4.mjs [out.mp4] [--fonts DIR]
+//   node scripts/export-mp4.mjs [out.mp4] [--fonts DIR] [--page ENTRY]
 // Needs: ffmpeg on PATH, and Playwright with Chromium (npm i -D playwright && npx playwright install chromium).
 // --fonts DIR: serve Google Fonts from a local folder (itim.css + the .woff2 files) when the
 //              browser has no internet access.
+// --page ENTRY: export another page with the same window.__film contract, e.g.
+//              experiments/apple-2d/index (build it first with build-preview.mjs ENTRY).
 import { spawn } from 'node:child_process';
 import { readFileSync, writeFileSync, mkdtempSync, rmSync } from 'node:fs';
 import { createRequire } from 'node:module';
@@ -23,8 +25,10 @@ const { chromium } = require('playwright');
 const args = process.argv.slice(2);
 const fontsIdx = args.indexOf('--fonts');
 const fontsDir = fontsIdx >= 0 ? args.splice(fontsIdx, 2)[1] : null;
+const pageIdx = args.indexOf('--page');
+const entry = pageIdx >= 0 ? args.splice(pageIdx, 2)[1] : 'index';
 const out = resolve(args[0] ?? 'tao-muon-bay.mp4');
-const page = pathToFileURL(resolve('dist-preview/index.preview.html')).href;
+const page = pathToFileURL(resolve(`dist-preview/${entry}.preview.html`)).href;
 
 const work = mkdtempSync(join(tmpdir(), 'tao-export-'));
 const browser = await chromium.launch();

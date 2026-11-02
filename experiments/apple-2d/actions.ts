@@ -43,8 +43,21 @@ export function withBlink(p: Pose, T: number): Pose {
 
 export const ACTIONS: Action[] = [
   {
+    id: 'hello', label: 'Chào', key: '0', duration: 3.6,
+    captions: [[0.5, 'Ờ thì...'], [1.7, '...mình là Táo.']],
+    pose: (t, T) => {
+      const p = idle(T);
+      if (t < 0.5) return p;
+      // A small, low-energy hello: one hand up, a lazy little wave, face stays calm.
+      p.lookX = 0;
+      p.armR = 2.1 + (t > 1.7 && t < 2.9 ? 0.3 * Math.sin((t - 1.7) * 10) : 0);
+      if (t > 3.1) p.armR = 0.25;
+      return p;
+    },
+  },
+  {
     id: 'calm', label: 'Bình thản', key: '1', duration: 3.5,
-    captions: [[0, 'Đây là Táo.'], [1.6, 'Táo ít nói. Vui... nhưng vui kiểu bình thản.']],
+    captions: [[0, 'Đây là Táo.'], [1.6, 'Táo ít nói... lâu lâu mới cười.']],
     pose: (t, T) => {
       const p = idle(T);
       if (t > 2.4) p.lookY = 0.4; // tiny glance down, nothing else happens
@@ -165,19 +178,15 @@ export const ACTIONS: Action[] = [
     },
   },
   {
-    id: 'nocam', label: 'Đừng quay', key: '9', duration: 3,
-    captions: [[0.2, '(Có người quay phim Táo.)'], [1.4, '...Đừng quay.']],
+    id: 'bye', label: 'Tạm biệt', key: 'b', duration: 2.6,
+    captions: [[0.3, 'Ờ.'], [1.2, 'Vậy thôi.']],
     pose: (t, T) => {
       const p = idle(T);
-      if (t < 1.0) return p;
-      // Not shy, just does not like cameras: half-lidded look, hand up over the lens, looks away.
-      p.eyes = 'half';
-      p.armR = 2.5;
-      if (t > 1.4) p.lookX = -1;
+      if (t > 1.2 && t < 2.2) p.armR = 2.1 + 0.3 * Math.sin((t - 1.2) * 10);
       return p;
     },
   },
 ];
 
 /** Order used by the auto demo. */
-export const DEMO_ORDER = ['calm', 'side', 'sigh', 'shock', 'smug', 'run', 'drop', 'nocam', 'happy'];
+export const DEMO_ORDER = ['calm', 'side', 'sigh', 'shock', 'smug', 'run', 'drop', 'happy'];

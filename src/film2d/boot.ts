@@ -1,5 +1,5 @@
 import { AudioManager } from '../audio/AudioManager';
-import { SYNTHS } from '../audio/synth';
+import { renderCuesWav } from '../audio/renderWav';
 import type { Cue } from '../audio/cues';
 import { FILM } from '../config/film';
 import { Playback } from '../core/Playback';
@@ -139,37 +139,8 @@ export function bootFilm2D(opts: Film2DOptions) {
   }
   loop();
 
-  /**
-   * Renders the whole soundtrack offline (no real-time playback needed) and returns a
-   * 16-bit mono WAV as base64. Used by scripts/export-mp4.mjs together with `filmCanvas`.
-   */
-  async function renderAudioWav(sampleRate = 44100): Promise<string> {
-    const ctx = new OfflineAudioContext(1, Math.ceil((timeline.duration + 1) * sampleRate), sampleRate);
-    const master = ctx.createGain();
-    master.gain.value = 0.9;
-    master.connect(ctx.destination);
-    for (const cue of opts.cues) SYNTHS[cue.id]?.(ctx as unknown as AudioContext, master, cue.t, cue);
-    const data = (await ctx.startRendering()).getChannelData(0);
-    const bytes = new Uint8Array(44 + data.length * 2);
-    const view = new DataView(bytes.buffer);
-    const str = (o: number, v: string) => [...v].forEach((ch, i) => view.setUint8(o + i, ch.charCodeAt(0)));
-    str(0, 'RIFF');
-    view.setUint32(4, 36 + data.length * 2, true);
-    str(8, 'WAVEfmt ');
-    view.setUint32(16, 16, true);
-    view.setUint16(20, 1, true);
-    view.setUint16(22, 1, true);
-    view.setUint32(24, sampleRate, true);
-    view.setUint32(28, sampleRate * 2, true);
-    view.setUint16(32, 2, true);
-    view.setUint16(34, 16, true);
-    str(36, 'data');
-    view.setUint32(40, data.length * 2, true);
-    for (let i = 0; i < data.length; i++) view.setInt16(44 + i * 2, Math.max(-1, Math.min(1, data[i])) * 0x7fff, true);
-    let bin = '';
-    for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
-    return btoa(bin);
-  }
+  /** Whole soundtrack rendered offline as a base64 WAV (for scripts/export-mp4.mjs). */
+  const renderAudioWav = (sampleRate = 44100) => renderCuesWav(opts.cues, timeline.duration, sampleRate);
 
   Object.assign(window, {
     __film: {
