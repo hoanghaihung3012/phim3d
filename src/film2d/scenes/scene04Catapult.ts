@@ -63,7 +63,7 @@ export const scene04Catapult: Scene2D = {
     k.to(63.2, 63.32, apple, { y: lowEnd.y }, 'inQuad');
     k.set(63.32, apple, { liftL: 0, liftR: 0, armL: 0.25, armR: 0.25 });
     texts.words.push({ t0: 63.32, t1: 63.9, text: 'cạch...', x: ROCK - 230, y: -260, size: 48 });
-    k.face(63.6, apple, 'dot', 'smile');
+    k.face(63.6, apple, 'dot', 'flat');
     // Step off onto the grass.
     k.to(63.9, 64.2, apple, { x: highEnd.x + 80, y: 0 }, 'linear');
 
@@ -79,15 +79,16 @@ export const scene04Catapult: Scene2D = {
     k.set(65.5, apple, { sy: 1, sx: 1 });
     k.to(65.6, 65.9, apple, { tilt: -Math.PI / 2 }, 'inQuad');
 
-    // 67-72 close-up: lying on its side, square dent on the cheek. Stares... then smiles.
+    // 67-72 close-up: lying on its side, square dent on the cheek. Stares. Sighs.
     const lieX = highEnd.x + 80 - 70;
     cut(k, 67, cam, lieX, -80, 2.8);
     k.face(67, apple, 'dot', 'flat');
     k.set(67, apple, { lookY: 0, leaf: -1.2 });
     texts.words.push({ t0: 67.6, t1: 69.4, text: '♪ wah wah wah', x: lieX + 40, y: -230, size: 46, rot: 0 });
-    // Táo does not mind. It actually liked that.
-    k.face(69.6, apple, 'happy', 'smile');
-    k.set(69.6, apple, { leaf: 0.4, blush: 1.4 });
-    texts.captions.push({ t0: 69.8, t1: 71.6, text: 'Ờ. Vui.' });
+    // A small sigh. Not sad, just a sigh.
+    k.face(70, apple, 'closed', 'none');
+    k.set(70, apple, { sigh: 0.001, leaf: -1.2 }).to(70, 71.4, apple, { sigh: 0.999 }, 'linear').set(71.4, apple, { sigh: 0 });
+    texts.captions.push({ t0: 70.0, t1: 71.6, text: 'Haizz.' });
+    k.face(71.6, apple, 'dot', 'flat');
   },
 };

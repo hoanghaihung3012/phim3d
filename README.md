@@ -57,7 +57,7 @@ src/
    trong kịch bản) qua `Keyer`. `timeline.evaluate(t)` đặt mọi thuộc tính cho đúng khung đó, nên seek
    tới đâu cũng ra đúng hình và xuất video ra từng frame giống hệt.
 2. **Nhân vật chỉ là các con số** (`eyes`, `mouth`, `leaf`, `legs`, `sx/sy`, `tilt`...). Biểu cảm là chỉ số
-   trong `EYES` / `MOUTHS`, đổi tức thì bằng `k.face(t, apple, 'smug', 'smirk')` cho đúng kiểu hài ít nói (Táo ít nói nhưng thích thú mọi thứ).
+   trong `EYES` / `MOUTHS`, đổi tức thì bằng `k.face(t, apple, 'smug', 'smirk')` cho đúng kiểu hài ít nói (Táo ít nói, vui kiểu bình thản, ít cười, lâu lâu thở dài).
 3. **Cảm giác vẽ tay:** thời gian được làm tròn xuống 12 hình/giây; mỗi hình vẽ lại nét với 1 trong 3 seed
    nhiễu nên đường viền "rung" nhẹ như phim vẽ tay. Độ dày nét tính theo pixel màn hình nên cận cảnh
    hay toàn cảnh nét vẫn đều.

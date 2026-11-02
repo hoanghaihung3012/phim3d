@@ -44,7 +44,7 @@ export interface Pose {
 export function restPose(): Pose {
   return {
     lift: 0, sx: 1, sy: 1, tilt: 0,
-    eyes: 'dot', lookX: 0, lookY: 0, mouth: 'smile',
+    eyes: 'dot', lookX: 0, lookY: 0, mouth: 'flat',
     leaf: 0, stem: 0, armL: 0.25, armR: 0.25,
     footL: 0, footR: 0, liftL: 0, liftR: 0,
     blush: 1, fx: {},

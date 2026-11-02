@@ -1,7 +1,7 @@
 # Thử nghiệm: Táo Lém 2D nét vẽ tay
 
 Bản thử nhân vật Táo Lém theo phong cách 2D tối giản: viền đậm bo tròn màu xám đen, tô phẳng,
-mắt chấm, má hồng, tay chân "sợi mì" ngắn, mặt bình thản, hơi cười. Thiết kế riêng cho quả táo, chỉ học nét vẽ
+mắt chấm, má hồng, tay chân "sợi mì" ngắn, mặt bình thản, ít cảm xúc. Thiết kế riêng cho quả táo, chỉ học nét vẽ
 (không sao chép nhân vật nào).
 
 ## Chạy thử

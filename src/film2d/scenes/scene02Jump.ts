@@ -31,7 +31,6 @@ export const scene02Jump: Scene2D = {
     // 19-21: close-up. Stares at the camera. Silence.
     cut(k, 19, cam, ax, -75, 3.6);
     k.set(19.5, apple, { dots: 1 }).set(19.8, apple, { dots: 2 }).set(20.1, apple, { dots: 3 }).set(21, apple, { dots: 0 });
-    k.face(20.5, apple, 'dot', 'smile'); // ...that was fun, actually
 
     // 21-26: legs pop out (no animation), back up, run, jump about... this high. Land.
     cut(k, 21, cam, ax + 90, -200, 1.5);
@@ -47,13 +46,12 @@ export const scene02Jump: Scene2D = {
     k.set(23.75, apple, { sy: 1, sx: 1 });
     texts.words.push({ t0: 23.6, t1: 24.4, text: 'cộp.', x: ax + 190, y: -170, size: 48 });
 
-    // 26-30: close-up again. Looks at us, quietly pleased with its 30 cm. Legs retract. "Ờ."
+    // 26-30: close-up again. Looks at us, expressionless, quietly fine with its 30 cm. Legs retract. "Ờ."
     cut(k, 26, cam, ax + 190, -120, 3.2);
-    k.face(26.4, apple, 'happy', 'smile');
-    k.set(26.4, apple, { lookX: 0, blush: 1.3 });
+    k.face(26.4, apple, 'dot', 'flat');
+    k.set(26.4, apple, { lookX: 0 });
     k.set(27.2, apple, { legs: 0 });
     texts.captions.push({ t0: 27.6, t1: 28.8, text: 'Ờ.' });
-    k.face(29, apple, 'dot', 'smile');
-    k.set(29, apple, { lookX: 0, blush: 1 });
+    k.face(29, apple, 'dot', 'flat');
   },
 };
