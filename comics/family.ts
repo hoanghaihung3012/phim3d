@@ -1063,7 +1063,7 @@ export function strip4(c: CanvasRenderingContext2D): void {
   panelFrame(sk, py(2), () => sisterScene(20, true, ['TỪ MAI CHỊ EM MÌNH DẬY 5 GIỜ', 'TẬP THỂ DỤC! LẦN NÀY CHỊ HỨA THẬT!'], 'Ờ.', 0));
 
   c.setTransform(1, 0, 0, 1, 0, 0);
-  text(c, W2 - 30, c.canvas.height - 18, 'TÁO #4 · TỪ MAI', 26, 'right');
+  text(c, W2 - 30, c.canvas.height - 18, 'TÁO Ờ #3 · TỪ MAI', 26, 'right');
 }
 
 // ======================= Strip #5: "Điểm kém" =======================

@@ -9,11 +9,15 @@ from pathlib import Path
 def build(out: str, title: str, caption: str, *imgs: str) -> None:
     brand, rest = title.split(' #', 1)
     figs = []
+    n_fb = sum('tao-truyen' not in Path(p).name for p in imgs)
     for i, p in enumerate(imgs):
         b64 = base64.b64encode(Path(p).read_bytes()).decode()
-        label = f'ảnh {i + 1}' if i < 2 else 'bản dọc đầy đủ'
+        full = 'tao-truyen' in Path(p).name
+        label = 'bản dọc đầy đủ' if full else ('ảnh' if n_fb == 1 else f'ảnh {i + 1}')
         figs.append(f'<figure><img src="data:image/png;base64,{b64}" alt="{label}"><button data-i="{i}" data-name="{Path(p).name}" hidden>⬇ Tải {label}</button></figure>')
-    extra = '<p class="sub">Ảnh cuối là bản dọc đầy đủ, đăng thêm làm ảnh thứ 3 nếu muốn.</p>' if len(imgs) > 2 else ''
+    extra = '<p class="sub">Ảnh cuối là bản dọc đầy đủ, đăng thêm nếu muốn.</p>' if len(imgs) > n_fb and n_fb > 1 else ''
+    intro = ('Bản cho fanpage: 2 ảnh 1080×1350 (4:5). Đăng cả hai trong cùng một bài, theo thứ tự 1 rồi 2.' if n_fb > 1
+             else 'Bản cho fanpage: 1 ảnh 1080×1350 (4:5), đủ cả 3 khung nên hiện trọn trên bảng tin.')
     page = f'''<title>{html.escape(title)} cho Facebook</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Itim&display=swap">
 <style>
@@ -29,7 +33,7 @@ button{{justify-self:center;padding:10px 20px;border:3px solid #3A3F4B;border-ra
 pre{{white-space:pre-wrap;background:#fff;color:#3A3F4E;border:1px solid var(--line);border-radius:6px;padding:12px;font-family:inherit;margin:0}}
 </style>
 <main>
-<header><h1><span>{html.escape(brand)}</span> #{html.escape(rest)}</h1><p class="sub">Bản cho fanpage: 2 ảnh 1080×1350 (4:5). Đăng cả hai trong cùng một bài, theo thứ tự 1 rồi 2.</p>{extra}</header>
+<header><h1><span>{html.escape(brand)}</span> #{html.escape(rest)}</h1><p class="sub">{intro}</p>{extra}</header>
 {''.join(figs)}
 <h2>Gợi ý caption</h2>
 <pre id="cap"></pre>
