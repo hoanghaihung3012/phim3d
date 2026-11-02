@@ -9,7 +9,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 FONT = str(Path(__file__).with_name('itim.ttf'))
 INK, RED, MUTED = (58, 63, 75), (242, 107, 102), (120, 125, 140)
-PAGE = 'Táo Ờ'
+PAGE = 'Ờ'
 
 
 def single(src: Image.Image, prefix: str, brand: str, title: str) -> None:
