@@ -1737,3 +1737,75 @@ export function strip11(c: CanvasRenderingContext2D): void {
   c.setTransform(1, 0, 0, 1, 0, 0);
   text(c, W2 - 30, c.canvas.height - 18, 'TÁO #11 · TÁO BÓN', 26, 'right');
 }
+
+// ======================= Đi bơi, 3-panel version (Facebook panel size) =======================
+const POOLSIDE = { sky: '#D6EEFF', tile: '#F6EBDA', tileLine: '#E3D3BA', pool: '#BFE3FF' };
+
+function poolTiles(sk: Sketch, x0: number, x1: number, y0: number, y1: number): void {
+  sk.ctx.fillStyle = POOLSIDE.tile; sk.ctx.fillRect(x0, y0, x1 - x0, y1 - y0);
+  for (let x = x0 + 60; x < x1; x += 90) sk.line([[x, y0 + 4], [x - 6, y1]], nid(), { width: LW * 0.35, color: POOLSIDE.tileLine, amp: 0.5 });
+  sk.line([[x0, y0], [x1, y0]], nid(), { width: LW * 0.6, amp: 1 });
+}
+
+function poolSky(sk: Sketch, w: number, h: number, clouds: Pt[]): void {
+  sk.ctx.fillStyle = POOLSIDE.sky; sk.ctx.fillRect(0, 0, w, h);
+  for (const [x, y] of clouds) sk.shape(scallop(x, y, 60, 26, 5, 0.18, 40), nid(), { fill: '#FFFFFF', width: LW * 0.5 });
+}
+
+/** Poolside: sky, a strip of pool in the back, tiles in front from `floor - 30`. */
+function poolside(sk: Sketch, w: number, h: number, floor: number, clouds: Pt[]): void {
+  poolSky(sk, w, h, clouds);
+  sk.ctx.fillStyle = POOLSIDE.pool; sk.ctx.fillRect(0, floor - 80, w, 50);
+  sk.line([[0, floor - 80], [w, floor - 80]], nid(), { width: LW * 0.5, amp: 1 });
+  poolTiles(sk, 0, w, floor - 30, h);
+}
+
+export function strip1b(c: CanvasRenderingContext2D): void {
+  c.canvas.width = W2;
+  c.canvas.height = GAP + 3 * (PH2 + GAP) + 50;
+  c.setTransform(1, 0, 0, 1, 0, 0);
+  c.fillStyle = '#FFFFFF'; c.fillRect(0, 0, c.canvas.width, c.canvas.height);
+  const sk = new Sketch(c);
+  sk.seed = 2;
+  sk.setCamera(new DOMMatrix());
+  uid = 25000;
+  const w = W2 - 40, H = PH2, F = H - 30;
+  const py = (i: number) => GAP + i * (PH2 + GAP);
+
+  // 1. Vịt invites; Táo can't swim.
+  panelFrame(sk, py(0), () => {
+    poolside(sk, w, H, F, [[90, 230], [1060, 250]]);
+    place(sk, 380, F, 0.58, 1, () => duck(sk, 'happy', 'open', -2.4));
+    apple(770, F, 0.42, { eyes: 0, mouth: 0, lookX: -0.6 }).draw(sk, 0);
+    sayBox(sk, 330, 80, ['TÁO ƠI! ĐI BƠI KHÔNG?'], [370, F - 190], 32);
+    sayBox(sk, 830, 80, ['TỚ KHÔNG BIẾT BƠI.'], [780, F - 215], 32);
+  });
+
+  // 2. Nấm, the know-it-all.
+  panelFrame(sk, py(1), () => {
+    poolside(sk, w, H, F, [[1060, 240]]);
+    nam(330, F, 0.72, { eyes: 1, mouth: 1, armR: 2.5, bendR: 0.4 }).draw(sk, 0);
+    apple(820, F, 0.42, { eyes: 0, mouth: 0, lookX: -0.6 }).draw(sk, 0);
+    sayBox(sk, 470, 62, ['YÊN TÂM! TÁO NHẸ HƠN NƯỚC.', '1/4 QUẢ TÁO LÀ KHÔNG KHÍ ĐẤY.'], [360, 135], 30);
+    sayBox(sk, 950, 95, ['ỜM.'], [860, 175], 30);
+  });
+
+  // 3. Táo floats... and drifts away.
+  panelFrame(sk, py(2), () => {
+    const edge = 500, wl = F - 25;
+    poolSky(sk, w, H, [[700, 60]]);
+    poolTiles(sk, 0, edge, F - 30, H);
+    nam(140, F - 30, 0.55, { eyes: 3, mouth: 2 }).draw(sk, 0);
+    place(sk, 330, F - 30, 0.45, 1, () => duck(sk, 'shock', 'open', 0.3));
+    const a = apple(930, wl + 20, 0.24, { eyes: 0, mouth: 0, legs: 0, arms: 0 });
+    a.draw(sk, 0);
+    place(sk, 918, wl + 20 - a.stemTipHeight() + 16, 0.15, 1, () => worm(sk, 'dot', 'flat'));
+    water(sk, edge, w + 10, wl, H + 10);
+    for (const [x, y] of [[1010, wl - 14], [1030, wl + 6]] as Pt[]) sk.line([[x, y], [x + 40, y]], nid(), { width: LW * 0.5, amp: 0.5 });
+    sayBox(sk, 300, 70, ['TÁO ĐI ĐÂU ĐẤY?'], [300, 170], 32);
+    sayBox(sk, 860, 130, ['TỚ VẪN KHÔNG', 'BIẾT BƠI.'], [920, wl - 70], 30);
+  });
+
+  c.setTransform(1, 0, 0, 1, 0, 0);
+  text(c, W2 - 30, c.canvas.height - 18, 'Táo Ờ', 26, 'right');
+}

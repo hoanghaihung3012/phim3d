@@ -4,7 +4,7 @@ import * as F from './family';
 type Draw = (c: CanvasRenderingContext2D) => void;
 const DRAWINGS: Record<string, Draw> = {
   lineup: F.lineup, dinner: F.dinner, wormGag: F.wormGag, family2: F.family2,
-  'tao-truyen-1-di-boi': F.strip, 'tao-truyen-2-bac-si': F.strip2, 'tao-truyen-3-ai-im-lau-nhat': F.strip3,
+  'tao-truyen-1-di-boi': F.strip1b, 'tao-truyen-1-di-boi-4-hang': F.strip, 'tao-truyen-2-bac-si': F.strip2, 'tao-truyen-3-ai-im-lau-nhat': F.strip3,
   'tao-truyen-4-tu-mai': F.strip4, 'tao-truyen-5-diem-kem': F.strip5, 'tao-truyen-1-them-gi': F.strip6,
   'tao-truyen-7-chia-banh': F.strip7, 'tao-truyen-8-hu-keo': F.strip8, 'tao-truyen-9-thi-chay': F.strip9,
   'tao-truyen-11-tao-bon': F.strip11,
