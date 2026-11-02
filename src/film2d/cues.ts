@@ -3,11 +3,11 @@ import type { Cue } from '../audio/cues';
 /**
  * Sound cues of the 2D film (absolute times, matching src/film2d/scenes).
  * Ids resolve to samples in config/assets.ts first, otherwise to synths in audio/synth.ts.
- * Voice lines ("Haizz.", "Hử?", "Ờ.") are placeholders until real recordings exist.
+ * Voice lines ("Hử?", "Ồ.", "Ờ. Vui.") are placeholders until real recordings exist.
  */
 export const CUES_2D: Cue[] = [
   // Scene 1
-  { id: 'sfx_haizz', t: 6.4, duration: 1.2, volume: 0.7 },
+  { id: 'sfx_ting', t: 6.2, volume: 0.35 },
   { id: 'sfx_chime', t: 9.6, volume: 0.5 },
   { id: 'sfx_hu', t: 11.0, volume: 0.8 },
   // Scene 2
@@ -40,7 +40,7 @@ export const CUES_2D: Cue[] = [
   { id: 'sfx_cop', t: 63.32, volume: 0.7 },
   { id: 'sfx_smack', t: 64.95, volume: 1.0 },
   { id: 'sfx_trombone', t: 67.6, volume: 0.6 },
-  { id: 'sfx_haizz', t: 70.0, duration: 1.3, volume: 0.7 },
+  { id: 'sfx_o', t: 69.8, volume: 0.8, pitch: 1.1 },
   // Scene 5
   { id: 'sfx_chime', t: 72.3, volume: 0.5 },
   { id: 'sfx_chime', t: 76.6, volume: 0.35 },

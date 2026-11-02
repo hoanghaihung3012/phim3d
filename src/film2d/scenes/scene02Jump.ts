@@ -12,7 +12,7 @@ export const scene02Jump: Scene2D = {
 
     // 14-17: close-up on the stem. Táo shakes, the stem twitches... snaps.
     cut(k, 14, cam, ax + 5, ay + 20, 4.2);
-    k.face(14, apple, 'half', 'flat');
+    k.face(14, apple, 'dot', 'flat'); // concentrating
     k.set(14, apple, { lookX: 0, lookY: -0.6, blush: 1, sway: 0 });
     k.set(14.4, apple, { shake: 1 });
     for (let i = 0; i < 8; i++) k.set(14.5 + i * 0.24, apple, { stem: i % 2 ? -6 : 8 });
@@ -31,6 +31,7 @@ export const scene02Jump: Scene2D = {
     // 19-21: close-up. Stares at the camera. Silence.
     cut(k, 19, cam, ax, -75, 3.6);
     k.set(19.5, apple, { dots: 1 }).set(19.8, apple, { dots: 2 }).set(20.1, apple, { dots: 3 }).set(21, apple, { dots: 0 });
+    k.face(20.5, apple, 'dot', 'smile'); // ...that was fun, actually
 
     // 21-26: legs pop out (no animation), back up, run, jump about... this high. Land.
     cut(k, 21, cam, ax + 90, -200, 1.5);
@@ -46,13 +47,13 @@ export const scene02Jump: Scene2D = {
     k.set(23.75, apple, { sy: 1, sx: 1 });
     texts.words.push({ t0: 23.6, t1: 24.4, text: 'cộp.', x: ax + 190, y: -170, size: 48 });
 
-    // 26-30: close-up again. Side-eye. Legs retract into nowhere. "Ờ."
+    // 26-30: close-up again. Looks at us, quietly pleased with its 30 cm. Legs retract. "Ờ."
     cut(k, 26, cam, ax + 190, -120, 3.2);
-    k.face(26.4, apple, 'smug', 'flat');
-    k.set(26.4, apple, { lookX: 1 });
+    k.face(26.4, apple, 'happy', 'smile');
+    k.set(26.4, apple, { lookX: 0, blush: 1.3 });
     k.set(27.2, apple, { legs: 0 });
     texts.captions.push({ t0: 27.6, t1: 28.8, text: 'Ờ.' });
-    k.face(29, apple, 'half', 'flat');
-    k.set(29, apple, { lookX: 0 });
+    k.face(29, apple, 'dot', 'smile');
+    k.set(29, apple, { lookX: 0, blush: 1 });
   },
 };

@@ -56,9 +56,9 @@ export class Apple2D {
   visible = 1;
   /** Mirror horizontally (-1). */
   flip = 1;
-  // Face
-  eyes = 0;
-  mouth = 0;
+  // Face: Táo is quiet but enjoys everything, so the resting face is calm dots + a small smile.
+  eyes = EYES.indexOf('dot');
+  mouth = MOUTHS.indexOf('smile');
   lookX = 0;
   lookY = 0;
   blush = 1;

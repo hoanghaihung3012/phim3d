@@ -1,7 +1,7 @@
 import type { Scene2D } from '../cast';
 import { cut, pan } from './helpers';
 
-/** Scene 1 "Treo lủng lẳng" (0:00 - 0:14): bored apple on the tree, Bé Mây floats by. */
+/** Scene 1 "Treo lủng lẳng" (0:00 - 0:14): a quiet, content apple on the tree, Bé Mây floats by. */
 export const scene01Hanging: Scene2D = {
   id: 'scene01',
   title: 'Cảnh 1: Treo lủng lẳng',
@@ -9,10 +9,11 @@ export const scene01Hanging: Scene2D = {
   end: 14,
   build(k, { apple, tree, cloud, cam, texts }) {
     const [ax, ay] = tree.anchor();
-    // Initial state: Táo hangs by its stem from the branch, no legs.
+    // Initial state: Táo hangs by its stem from the branch, no legs. Quiet, content face.
     k.set(0, apple, {
-      x: ax, y: ay + apple.stemTipHeight(), pivot: 1, legs: 0, sway: 1, eyes: 0, mouth: 0, visible: 1,
+      x: ax, y: ay + apple.stemTipHeight(), pivot: 1, legs: 0, sway: 1, visible: 1,
     });
+    k.face(0, apple, 'dot', 'smile');
     k.set(0, cloud, { visible: 0, x: -900, y: -1000, scale: 0.6, eyes: 0, wave: 0 });
 
     // 0-4: wide shot, slow dolly toward the tree, title bounces in.
@@ -20,15 +21,13 @@ export const scene01Hanging: Scene2D = {
     pan(k, 0, 4, cam, 170, -420, 1.0);
     texts.screen.push({ t0: 0.4, t1: 3.8, text: 'Táo Muốn Bay', x: 0.5, y: 0.1, size: 110, bounce: true });
 
-    // 4-9: medium shot on Táo. It sighs, the leaf droops.
+    // 4-9: medium shot on Táo. It closes its eyes and enjoys the breeze; the leaf flutters.
     cut(k, 4, cam, ax, ay + 60, 2.4);
-    k.face(6.0, apple, 'closed', 'none');
-    k.to(6.0, 6.4, apple, { sy: 1.06, sx: 0.97 }, 'outQuad');
-    k.to(6.4, 7.0, apple, { sy: 0.92, sx: 1.05, leaf: -1.0 }, 'outQuad');
-    k.set(6.4, apple, { sigh: 0.001 }).to(6.4, 7.8, apple, { sigh: 0.999 }, 'linear').set(7.8, apple, { sigh: 0 });
-    texts.captions.push({ t0: 6.4, t1: 8.0, text: 'Haizz.' });
-    k.face(8.0, apple, 'half', 'flat');
-    k.to(8.0, 8.4, apple, { sy: 1, sx: 1 });
+    k.face(6.0, apple, 'happy', 'smile');
+    k.set(6.0, apple, { leaf: 0.4, flap: 1, blush: 1.3 });
+    texts.words.push({ t0: 6.2, t1: 7.8, text: '♪', x: ax - 110, y: ay - 10, size: 56 });
+    k.face(8.0, apple, 'dot', 'smile');
+    k.set(8.0, apple, { leaf: 0, flap: 0, blush: 1 });
 
     // 9-14: pull back. Bé Mây floats by, waves, rises out of frame.
     cut(k, 9, cam, 150, -640, 1.1);

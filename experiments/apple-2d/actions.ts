@@ -1,5 +1,6 @@
 // Short acting clips for the 2D apple. Each clip maps local time (s) to a Pose.
-// Expressions switch instantly (no tweening) to keep the deadpan, stepped comedy timing.
+// Expressions switch instantly (no tweening) to keep the stepped comedy timing.
+// Táo talks very little but enjoys everything: the resting face is calm dots + a small smile.
 import { restPose, type Pose } from './AppleDoodle';
 
 export interface Action {
@@ -42,11 +43,11 @@ export function withBlink(p: Pose, T: number): Pose {
 
 export const ACTIONS: Action[] = [
   {
-    id: 'bored', label: 'Đơ', key: '1', duration: 3.5,
-    captions: [[0, 'Đây là Táo.'], [1.6, 'Táo lém và... hơi chán đời.']],
+    id: 'calm', label: 'Bình thản', key: '1', duration: 3.5,
+    captions: [[0, 'Đây là Táo.'], [1.6, 'Táo ít nói... nhưng cái gì cũng thấy vui.']],
     pose: (t, T) => {
       const p = idle(T);
-      if (t > 2.4) p.lookY = 0.4; // tiny glance down, nothing else happens
+      if (t > 2.4) { p.eyes = 'happy'; p.blush = 1.3; } // quietly pleased, nothing else happens
       return p;
     },
   },
@@ -57,7 +58,7 @@ export const ACTIONS: Action[] = [
       const p = idle(T);
       if (t > 0.4) { p.lookX = 1; p.tilt = 0.035; }
       if (t > 1.5) { p.lookX = -1; p.tilt = -0.035; p.eyes = 'smug'; }
-      if (t > 2.6) { p.lookX = 0; p.tilt = 0; p.eyes = 'half'; }
+      if (t > 2.6) { p.lookX = 0; p.tilt = 0; p.eyes = 'dot'; }
       return p;
     },
   },
@@ -97,20 +98,21 @@ export const ACTIONS: Action[] = [
     },
   },
   {
-    id: 'sigh', label: 'Thở dài', key: '5', duration: 3.2,
-    captions: [[0.6, 'Haizz.']],
+    id: 'breeze', label: 'Hóng gió', key: '5', duration: 3.2,
+    captions: [[0.6, 'Ờ. Mát.']],
     pose: (t, T) => {
+      // A deep, happy breath of fresh air (eyes closed, smiling), not a sigh.
       const p = idle(T);
-      p.eyes = 'closed';
-      p.mouth = 'none';
-      const inhale = easeOut(seg(t, 0, 0.6));
-      const exhale = easeOut(seg(t, 0.6, 1.4));
-      p.sy += 0.07 * inhale - 0.15 * exhale;
-      p.sx += -0.03 * inhale + 0.07 * exhale;
-      p.armL = p.armR = 0.4 * inhale + -0.35 * exhale;
-      p.leaf = 0.3 * inhale - 1.2 * exhale;
-      if (t > 0.6) p.fx.sigh = seg(t, 0.6, 2.2);
-      if (t > 2.4) { p.eyes = 'half'; p.mouth = 'flat'; }
+      p.eyes = 'happy';
+      p.mouth = 'smile';
+      const inhale = easeOut(seg(t, 0, 0.8));
+      const relax = easeOut(seg(t, 0.8, 1.6));
+      p.sy += 0.07 * inhale - 0.04 * relax;
+      p.sx += -0.03 * inhale + 0.02 * relax;
+      p.armL = p.armR = 0.25 + 0.35 * inhale - 0.2 * relax;
+      p.leaf = 0.5 * Math.sin(t * 9) * seg(t, 0.4, 0.8);
+      p.blush = 1.3;
+      if (t > 2.4) { p.eyes = 'dot'; }
       return p;
     },
   },
@@ -166,4 +168,4 @@ export const ACTIONS: Action[] = [
 ];
 
 /** Order used by the auto demo. */
-export const DEMO_ORDER = ['bored', 'side', 'sigh', 'shock', 'smug', 'run', 'drop', 'happy'];
+export const DEMO_ORDER = ['calm', 'side', 'breeze', 'shock', 'smug', 'run', 'drop', 'happy'];

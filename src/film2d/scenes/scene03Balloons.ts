@@ -1,7 +1,7 @@
 import type { Scene2D } from '../cast';
 import { cut, pan } from './helpers';
 
-/** Scene 3 "Thử lần 2: Bóng bay" (0:30 - 0:52): balloons, Sẻ Bông, three pops, "Thôi xong." */
+/** Scene 3 "Thử lần 2: Bóng bay" (0:30 - 0:52): balloons, Sẻ Bông, three pops, "Ồ." */
 export const scene03Balloons: Scene2D = {
   id: 'scene03',
   title: 'Cảnh 3: Thử lần 2 - Bóng bay',
@@ -20,10 +20,10 @@ export const scene03Balloons: Scene2D = {
     k.face(32.0, apple, 'dot', 'flat');
     k.to(32.6, 33.3, balloons, { x: X + 3, y: -40 }, 'inOutQuad');
     k.set(33.4, balloons, { held: 1 });
-    k.face(33.4, apple, 'half', 'bite');
+    k.face(33.4, apple, 'happy', 'bite'); // enjoying the ride
     k.set(33.4, apple, { lookX: 0 });
 
-    // 35-42: floats up, swinging like a pendulum. Bored face, but the leaf flaps happily.
+    // 35-42: floats up, swinging like a pendulum, eyes closed, leaf flapping happily.
     k.set(35, apple, { pivot: 2, sway: 1, flap: 1 });
     k.to(35, 42, apple, { y: HIGH }, 'inOutSine');
     pan(k, 35, 42, cam, X + 40, HIGH - 150, 1.3);
@@ -52,11 +52,14 @@ export const scene03Balloons: Scene2D = {
     // Strings are gone: the bird keeps "perching" on thin air where its balloon was.
     k.set(46.8, balloons, { held: 0, x: X, y: HIGH - 40 });
 
-    // 48-52: wide. One beat floating in mid-air. "Thôi xong." Then straight down.
+    // 48-52: wide. One beat floating in mid-air. "Ồ." A small smile. Then straight down.
     cut(k, 48, cam, X + 20, HIGH - 50, 1.25);
-    k.face(46.8, apple, 'half', 'flat');
+    k.face(46.8, apple, 'dot', 'flat');
     k.set(46.8, apple, { lookX: 0, lookY: 0, sway: 0, tilt: 0 });
-    texts.captions.push({ t0: 48.6, t1: 49.8, text: 'Thôi xong.' });
+    k.face(48.6, apple, 'dot', 'o');
+    texts.captions.push({ t0: 48.6, t1: 49.6, text: 'Ồ.' });
+    // Even this is kind of fun.
+    k.face(49.4, apple, 'happy', 'smile');
     k.set(50, apple, { pivot: 0 });
     k.to(50, 50.5, apple, { y: 0 }, 'inQuad');
     texts.words.push({ t0: 50.55, t1: 51.6, text: 'CỘP.', x: X + 20, y: HIGH + 330, size: 80 });
