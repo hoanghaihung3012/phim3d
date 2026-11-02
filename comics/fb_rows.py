@@ -20,7 +20,6 @@ def stack(src_path: str, out: str, title: str, *spans: str) -> None:
     for r in rows:
         r = r.resize((w, int(r.height * k)), Image.LANCZOS)
         im.paste(r, (x0, y))
-        d.rounded_rectangle((x0 - 4, y - 4, x0 + w + 4, y + r.height + 4), radius=16, outline=INK, width=5)
         y += r.height + gap
     big, small = ImageFont.truetype(FONT, 52), ImageFont.truetype(FONT, 30)
     d.text((x0, 40), title, font=big, fill=INK)

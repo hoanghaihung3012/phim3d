@@ -448,6 +448,44 @@ export function strip(c: CanvasRenderingContext2D): void {
   sk.line([[PW / 2 - 150, 104], [PW / 2 + 150, 106]], nid(), { width: LW * 0.5, amp: 1.5 });
   const G = (i: number) => TOP + PH * i + PH - 40;
 
+  // Panel backgrounds (poolside): rects match the crops used for the Facebook cut (comics/fb_rows.py).
+  const PANELS: [number, number][] = [[175, 655], [670, 1190], [1300, 1735], [1800, 2250]];
+  const SKY = '#D6EEFF', TILE = '#F6EBDA', TILE_LINE = '#E3D3BA', POOL = '#BFE3FF';
+  const tiles = (x0: number, x1: number, y0: number, y1: number) => {
+    c.fillStyle = TILE; c.fillRect(x0, y0, x1 - x0, y1 - y0);
+    for (let x = x0 + 60; x < x1; x += 90) sk.line([[x, y0 + 4], [x - 6, y1]], nid(), { width: LW * 0.35, color: TILE_LINE, amp: 0.5 });
+    sk.line([[x0, y0], [x1, y0]], nid(), { width: LW * 0.6, amp: 1 });
+  };
+  const sky = (y0: number, y1: number, clouds: Pt[]) => {
+    c.fillStyle = SKY; c.fillRect(20, y0, PW - 40, y1 - y0);
+    for (const [x, y] of clouds) sk.shape(scallop(x, y, 60, 26, 5, 0.18, 40), nid(), { fill: '#FFFFFF', width: LW * 0.5 });
+  };
+  const clipPanel = (i: number, fn: () => void) => {
+    const [y0, y1] = PANELS[i];
+    c.save(); sk.trace(rrectPts(20, y0, PW - 40, y1 - y0, 22), true); c.clip(); fn(); c.restore();
+  };
+  clipPanel(0, () => {
+    sky(175, 655, [[120, 360]]);
+    c.fillStyle = POOL; c.fillRect(20, G(0) - 110, PW - 40, 40);
+    sk.line([[20, G(0) - 110], [PW - 20, G(0) - 110]], nid(), { width: LW * 0.5, amp: 1 });
+    tiles(20, PW - 20, G(0) - 70, 655);
+  });
+  clipPanel(1, () => {
+    sky(670, 1190, [[880, 720]]);
+    c.fillStyle = POOL; c.fillRect(20, G(1) - 110, PW - 40, 40);
+    sk.line([[20, G(1) - 110], [PW - 20, G(1) - 110]], nid(), { width: LW * 0.5, amp: 1 });
+    tiles(20, PW - 20, G(1) - 70, 1190);
+  });
+  clipPanel(2, () => {
+    sky(1300, 1735, [[520, 1350]]);
+    c.fillStyle = POOL; c.fillRect(20, G(2) - 40, PW - 40, 1735 - (G(2) - 40));
+  });
+  clipPanel(3, () => {
+    sky(1800, 2250, [[640, 1850]]);
+    c.fillStyle = POOL; c.fillRect(470, G(3) - 30, PW - 490, 2250 - (G(3) - 30));
+    tiles(20, 475, G(3) - 40, 2250);
+  });
+
   // Panel 1: Vịt invites, Táo can't swim.
   let g = G(0);
   place(sk, 300, g, 0.62, 1, () => duck(sk, 'happy', 'open', -2.4));
@@ -485,6 +523,10 @@ export function strip(c: CanvasRenderingContext2D): void {
   say(sk, 300, g - 330, ['TÁO ĐI ĐÂU ĐẤY?'], [330, g - 200]);
   say(sk, 760, g - 250, ['TỚ VẪN KHÔNG', 'BIẾT BƠI.'], [795, g - 120], 30);
   for (const [x, y] of [[870, g - 50], [890, g - 30]] as Pt[]) sk.line([[x, y], [x + 34, y]], nid(), { width: LW * 0.5, amp: 0.5 });
+  for (const [y0, y1] of PANELS) {
+    sk.trace(sk.wobble(rrectPts(20, y0, PW - 40, y1 - y0, 22), nid(), 1), true);
+    c.lineWidth = sk.px(LW * 1.4); c.strokeStyle = INK; c.lineJoin = 'round'; c.stroke();
+  }
 }
 
 // ======================= Strip #2: 4 wide framed panels =======================
