@@ -1112,7 +1112,7 @@ export function strip5(c: CanvasRenderingContext2D): void {
   const w = W2 - 40;
   const py = (i: number) => GAP + i * (PH2 + GAP);
 
-  const rant = (lines: string[], dusty: boolean, taoMouth: number) => {
+  const rant = (lines: string[], dusty: boolean, taoMouth: number, taoLine = '') => {
     nightBg(sk, w, PH2);
     door(sk, 40, 150, PH2 + 10);
     phoneOnDesk(sk, 960, PH2 - 150, dusty);
@@ -1122,7 +1122,8 @@ export function strip5(c: CanvasRenderingContext2D): void {
     puff(sk, 150, 200, 1); puff(sk, 500, 150, 1.1);
     testPaper(sk, 500, PH2 - 150);
     apple(660, PH2 + 50, 0.5, { eyes: 0, mouth: taoMouth, lookX: -0.8 }).draw(sk, 0);
-    sk.ctx.save(); sk.ctx.fillStyle = INK; sk.ctx.font = `28px ${FONT_FAMILY}`; sk.ctx.fillText('?', 720, 210); sk.ctx.fillText('?', 745, 190); sk.ctx.restore();
+    if (taoLine) sayBox(sk, 790, 205, [taoLine], [700, 255], 30);
+    else { sk.ctx.save(); sk.ctx.fillStyle = INK; sk.ctx.font = `28px ${FONT_FAMILY}`; sk.ctx.fillText('?', 720, 210); sk.ctx.fillText('?', 745, 190); sk.ctx.restore(); }
     sayBox(sk, 620, 74, lines, [430, 160], 31);
   };
 
@@ -1142,7 +1143,7 @@ export function strip5(c: CanvasRenderingContext2D): void {
   });
 
   // 3. Same scene, weeks later: the real reason.
-  panelFrame(sk, py(2), () => rant(['ĐỂ CHỨNG MINH LÀ KHÔNG CÓ ĐIỆN THOẠI', 'TỤI MÌNH VẪN ĐIỂM KÉM.'], true, 3));
+  panelFrame(sk, py(2), () => rant(['ĐỂ CHỨNG MINH LÀ KHÔNG CÓ ĐIỆN THOẠI', 'TỤI MÌNH VẪN ĐIỂM KÉM.'], true, 0, 'Ờ.'));
 
   c.setTransform(1, 0, 0, 1, 0, 0);
   text(c, W2 - 30, c.canvas.height - 18, 'Ờ', 26, 'right');
