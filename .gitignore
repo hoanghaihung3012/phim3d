@@ -6,3 +6,4 @@ dist/
 dist-preview/
 comics/build/
 comics/out/render/
+__pycache__/
