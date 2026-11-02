@@ -46,12 +46,15 @@ export const scene02Jump: Scene2D = {
     k.set(23.75, apple, { sy: 1, sx: 1 });
     texts.words.push({ t0: 23.6, t1: 24.4, text: 'cộp.', x: ax + 190, y: -170, size: 48 });
 
-    // 26-30: close-up again. Looks at us, expressionless, quietly fine with its 30 cm. Legs retract. "Ờ."
+    // 26-30: close-up again. Looks at us, expressionless, quietly fine with its 30 cm. Legs retract. "Ờ." Then shyly looks away.
     cut(k, 26, cam, ax + 190, -120, 3.2);
     k.face(26.4, apple, 'dot', 'flat');
     k.set(26.4, apple, { lookX: 0 });
     k.set(27.2, apple, { legs: 0 });
     texts.captions.push({ t0: 27.6, t1: 28.8, text: 'Ờ.' });
-    k.face(29, apple, 'dot', 'flat');
+    // A bit shy about being stared at: cheeks go pink, eyes slide away.
+    k.set(28.4, apple, { blush: 1.9, lookX: -1, lookY: 0.5, tilt: -0.05, armL: 0.6, armR: 0.6 });
+    k.face(29.4, apple, 'dot', 'flat');
+    k.set(29.4, apple, { blush: 1, lookX: 0, lookY: 0, tilt: 0, armL: 0.25, armR: 0.25 });
   },
 };
