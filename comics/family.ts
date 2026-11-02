@@ -654,7 +654,7 @@ export function strip2(c: CanvasRenderingContext2D): void {
   });
 
   c.setTransform(1, 0, 0, 1, 0, 0);
-  text(c, W2 - 30, c.canvas.height - 18, 'TÁO #2 · BÁC SĨ', 26, 'right');
+  text(c, W2 - 30, c.canvas.height - 18, 'TÁO Ờ #2 · BÁC SĨ', 26, 'right');
 }
 
 // ======================= Táo sticker set =======================
@@ -1248,7 +1248,7 @@ export function strip6(c: CanvasRenderingContext2D): void {
   });
 
   c.setTransform(1, 0, 0, 1, 0, 0);
-  text(c, W2 - 30, c.canvas.height - 18, 'TÁO #1 · THÈM GÌ', 26, 'right');
+  text(c, W2 - 30, c.canvas.height - 18, 'TÁO Ờ #1 · THÈM GÌ', 26, 'right');
 }
 
 // ======================= Strip #7: "Chia bánh" (Táo's clever line) =======================

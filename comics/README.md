@@ -5,6 +5,8 @@ Short comic strips, stickers and Facebook images for the Táo series, drawn in c
 - `family.ts`: every drawing. Strips are `strip`, `strip2` … `strip11`; extra cast (Ba, Mẹ, Vịt, Sâu, Gà, Chó, Mèo) are helper functions there.
 - `main.ts`: browser entry that maps output names to drawings.
 - `render.cjs`: renders PNGs with headless Chromium (Playwright).
+- `fb_split.py`: cuts a 4-panel strip into two 1080x1350 Facebook images; `fb_page.py` builds the download page with a caption.
+- The fanpage is "Táo Ờ": strip footers read `TÁO Ờ #n · NAME` (#1 and #2 so far).
 - `itim.ttf`: Itim font (SIL Open Font License), embedded so text renders offline.
 - `out/`: the published PNGs (`strips/`, `stickers/`, `fb/`, `sketches/`).
 
