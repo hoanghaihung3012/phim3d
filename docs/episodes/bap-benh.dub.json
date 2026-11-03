@@ -1,5 +1,5 @@
 {
-  "_comment": "Vietnamese dub for Bập bênh (ElevenLabs eleven_v4, flow R1l3uYS24i4cBEmidKZv). Vịt: Yuna (aHC3XZOMg3HZuXVYK6hy), Táo: Quốc Việt (INVEBXRYITvag1Ed3nVO). Files come from the first take of each line; fine-tune t after measuring the takes with ffmpeg silencedetect. Mix: node scripts/mix-dub.mjs in.mp4 docs/episodes/bap-benh.dub.json out.mp4",
+  "_comment": "Vietnamese dub for Bập bênh (ElevenLabs eleven_v4, flow R1l3uYS24i4cBEmidKZv). Vịt: Yuna (aHC3XZOMg3HZuXVYK6hy), Táo: Quốc Việt (INVEBXRYITvag1Ed3nVO). Files are take 1 of each line except 03 and 09 (take 2, shorter so they end before the next line); times checked against the takes with ffmpeg silencedetect. Mix: node scripts/mix-dub.mjs in.mp4 docs/episodes/bap-benh.dub.json out.mp4",
   "voiceGainDb": 3,
   "loudnessLufs": -14,
   "lines": [

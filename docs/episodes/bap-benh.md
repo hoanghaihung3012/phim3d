@@ -27,7 +27,8 @@ Nhân vật: Táo, Vịt (dáng tròn), Sâu. Gag mới, không trùng các truy
 
 - Vịt = ElevenLabs "Yuna", Táo = "Quốc Việt", model eleven_v4, flow `R1l3uYS24i4cBEmidKZv`
   (11 câu, mỗi câu 2 bản). File: `assets/voice/bap-benh/01..11.mp3`, thời điểm trong `docs/episodes/bap-benh.dub.json`.
-- Tải bản thu cần mạng cho phép `elevenlabsusercontent.com`.
+- Đã chọn bản 1 cho mọi câu, riêng câu 03 và 09 dùng bản 2 (ngắn hơn, không đè câu sau). Tải bản thu cần mạng cho phép `elevenlabsusercontent.com`.
+- Bản cuối: `/mnt/project-files/video/tao-bap-benh.mp4` (33 giây, -14 LUFS).
 - Xuất lại:
   ```
   node scripts/build-preview.mjs bap-benh
