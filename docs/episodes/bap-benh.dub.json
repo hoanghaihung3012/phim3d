@@ -1,0 +1,18 @@
+{
+  "_comment": "Vietnamese dub for Bập bênh (ElevenLabs eleven_v4, flow R1l3uYS24i4cBEmidKZv). Vịt: Yuna (aHC3XZOMg3HZuXVYK6hy), Táo: Quốc Việt (INVEBXRYITvag1Ed3nVO). Files come from the first take of each line; fine-tune t after measuring the takes with ffmpeg silencedetect. Mix: node scripts/mix-dub.mjs in.mp4 docs/episodes/bap-benh.dub.json out.mp4",
+  "voiceGainDb": 3,
+  "loudnessLufs": -14,
+  "lines": [
+    { "t": 0.25, "who": "vit", "text": "Táo ơi! Chơi bập bênh đi!", "file": "assets/voice/bap-benh/01.mp3" },
+    { "t": 2.6, "who": "tao", "gainDb": 3, "text": "Ờ.", "file": "assets/voice/bap-benh/02.mp3" },
+    { "t": 4.65, "who": "vit", "text": "Hự! Hự! Cậu nặng quá!", "file": "assets/voice/bap-benh/03.mp3" },
+    { "t": 8.05, "who": "vit", "text": "Sâu ơi! Lên giúp tớ với!", "file": "assets/voice/bap-benh/04.mp3" },
+    { "t": 13.65, "who": "vit", "text": "Vẫn không được!", "file": "assets/voice/bap-benh/05.mp3" },
+    { "t": 16.05, "who": "vit", "text": "Ơ? Ơ? Ơ?", "file": "assets/voice/bap-benh/06.mp3" },
+    { "t": 18.55, "who": "vit", "text": "Hay quá! Sao cậu làm được vậy?", "file": "assets/voice/bap-benh/07.mp3" },
+    { "t": 21.3, "who": "tao", "gainDb": 3, "text": "Ngồi gần giữa thì nhẹ hơn.", "file": "assets/voice/bap-benh/08.mp3" },
+    { "t": 23.55, "who": "vit", "text": "À! Vậy tớ cũng ngồi gần giữa!", "file": "assets/voice/bap-benh/09.mp3" },
+    { "t": 25.75, "who": "vit", "text": "Á á á á á!", "file": "assets/voice/bap-benh/10.mp3" },
+    { "t": 28.35, "who": "tao", "gainDb": 3, "text": "Giờ cậu còn nhẹ hơn.", "file": "assets/voice/bap-benh/11.mp3" }
+  ]
+}
