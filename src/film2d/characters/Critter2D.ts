@@ -40,6 +40,12 @@ export class Critter2D {
   walk = 0;
   /** Holding a fruit basket in front (1) or not (0). */
   basket = 0;
+  /** Pet look: red collar with a little gold bell. */
+  collar = 0;
+  /** Front paw raised towards +x (0 down .. 1 held out for a handshake). */
+  paw = 0;
+  /** Roll angle (radians) around the middle of the ball (a cat rolling over). */
+  roll = 0;
 
   constructor(readonly kind: CritterKind) {}
 
@@ -61,6 +67,11 @@ export class Critter2D {
     c.setTransform(
       sk.camera.multiply(new DOMMatrix().translate(this.x, this.y - (this.hop + bob) * this.scale).scale(this.scale * this.flip, this.scale)),
     );
+    if (this.roll !== 0) {
+      c.translate(0, CY);
+      c.rotate(this.roll);
+      c.translate(0, -CY);
+    }
     // Legs.
     for (const s of [-1, 1]) {
       const dx = this.walk > 0.5 ? 8 * Math.sin(t * 14 + (s > 0 ? Math.PI : 0)) : 0;
@@ -78,6 +89,8 @@ export class Critter2D {
     sk.shape(ellipse(0, CY, R, R * 0.94, 30), 5310, { fill: p.body });
     this.drawFront(sk, t, p);
     this.drawFace(sk, t, p);
+    if (this.collar > 0.5) this.drawCollar(sk);
+    if (this.paw > 0.01) this.drawPaw(sk, p);
     if (this.basket > 0.5) this.drawBasket(sk);
     if (this.sweat > 0) drawSweat(sk, R * 0.75, CY - R * 0.7 + this.sweat * 20, 12, 5340);
     c.restore();
@@ -140,6 +153,22 @@ export class Critter2D {
       }
     }
     drawMouth(sk, mouth, lx, CY + 24, 9, 5335);
+  }
+
+  private drawCollar(sk: Sketch): void {
+    const y = CY + R * 0.62;
+    sk.line(quad([-R * 0.78, y - 8], [0, y + 16], [R * 0.78, y - 8], 10), 5360, { width: LW * 1.6, color: '#FF6B6B' });
+    sk.blob(0, y + 18, 11, 11, 5361, '#FFD84D');
+    sk.line([[-6, y + 22], [6, y + 22]], 5362, { width: LW * 0.35 });
+  }
+
+  /** One stubby front paw held out to the +x side, rising with `paw`. */
+  private drawPaw(sk: Sketch, p: (typeof PALETTE)[CritterKind]): void {
+    const k = Math.min(1, this.paw);
+    const from: Pt = [R * 0.45, CY + R * 0.55];
+    const to: Pt = [R * (0.55 + 0.6 * k), CY + R * (0.6 - 0.55 * k)];
+    sk.tube([from, to], 5363, 26, p.leg, 0.5);
+    sk.blob(to[0], to[1], 17, 15, 5364, p.leg);
   }
 
   private drawBasket(sk: Sketch): void {

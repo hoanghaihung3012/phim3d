@@ -21,6 +21,7 @@ export default defineConfig({
             'tron-tim': 'tron-tim.html', // episode: Trốn tìm (vertical 9:16, for Reels)
             'bap-benh': 'bap-benh.html', // episode: Bập bênh (vertical 9:16, for Reels)
             'tao-bon': 'tao-bon.html', // episode: Táo bón (vertical 9:16, for Reels, no voices)
+            'con-vat-cung': 'con-vat-cung.html', // episode: Con vật cưng (vertical 9:16, for Reels, no voices)
             film3d: 'film3d.html', // earlier 3D version
             'apple-test': 'apple-test.html', // character test reel for Táo Lém
             'apple-2d': 'experiments/apple-2d/index.html', // 2D hand-drawn style test
