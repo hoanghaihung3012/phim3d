@@ -15,7 +15,7 @@ Táo ít nói nhưng tốt bụng: tự nấu cháo, thổi nguội từng muỗ
 | 0:09-0:11.5 | Táo múc một muỗng, thổi "phù... phù..." thật cẩn thận cho nguội (khoảnh khắc tốt bụng). |
 | 0:11.5-0:14.5 | Táo rút ra cây muỗng dài ngoằng, đứng thật xa đưa tới mỏ Vịt: "Há miệng ra. A~" Vịt: "A~" (măm), cười híp mắt. |
 | 0:14.5-0:16 | Cửa hé mở: Gà xách giỏ trái cây ló đầu vào thăm, thấy cảnh đó thì tròn mắt, rơi giỏ, quay đầu chạy biến. |
-| 0:16-0:18.5 | Ngoài sân: Chó và Mèo đang đứng đợi. Gà chạy ào tới, hoảng hốt: "Trời ơi! Vịt bị táo bón kìa!!" Chó, Mèo giật mình, giọt mồ hôi, rồi cả ba ùa vào phòng. |
+| 0:16-0:18.5 | Ngay ngoài cửa (cùng bối cảnh, máy quay lia sang): Chó và Mèo đang đứng đợi. Gà chạy ào tới, hoảng hốt: "Trời ơi! Vịt bị táo bón kìa!!" Chó, Mèo giật mình, giọt mồ hôi, rồi cả ba ùa vào phòng. |
 | 0:18.5-0:21.5 | Trong phòng, ba bạn đứng ở cửa. Cận Táo, mặt đơ: "Vịt không BỊ Táo bón. Vịt ĐƯỢC Táo bón." (chơi chữ, chữ BỊ / ĐƯỢC nhấn mạnh) |
 | 0:21.5-0:23 | Ba bạn: "..." (dế kêu). Vịt: "A~ nữa!" |
 | 0:23-0:26.5 | Gà, Chó, Mèo nhìn nhau rồi đồng thanh: "Tụi tớ cũng muốn được Táo bón!" |
@@ -25,7 +25,7 @@ Táo ít nói nhưng tốt bụng: tự nấu cháo, thổi nguội từng muỗ
 ## Âm thanh
 
 - KHÔNG lồng tiếng (chị chốt 2026-11-03): chỉ bong bóng thoại, nhạc nền và tiếng động. Synth babble luôn tắt (`setBabble(false)`).
-- Hiệu ứng mạnh cho cuốn hút: nền tia truyện tranh (`TaoBonFx.burst`) ở cận mặt, zoom giật (`crash`), rung camera, chữ tượng thanh (VÚT!, MĂM!, RẦM!, HẢ?!).
+- Bản 2 (chị góp ý 2026-11-03): cả clip ở trong phòng Vịt giống truyện (tường kem, sàn gỗ, giường chăn xanh, cửa vàng), không mở cảnh khác (bỏ nền tia `TaoBonFx.burst` và cảnh ngoài sân), máy quay êm (bỏ rung, zoom chậm). Giữ chữ tượng thanh (VÚT!, MĂM!, HẢ?!) và tiếng động.
 - Bản thu ElevenLabs đã lỡ tạo trước khi chị dặn (flow `1LITN00898ijedA94A3U`, 2 bản mỗi câu) để ở `assets/voice/tao-bon/` nếu sau này cần bản lồng tiếng.
 - Bản cuối: `/mnt/project-files/video/tao-tao-bon.mp4` (32,5 giây, khoảng -14 LUFS).
 - Xuất lại:

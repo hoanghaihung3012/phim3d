@@ -6,7 +6,7 @@ import type { Camera2D } from '../../film2d/Camera2D';
 import type { Pt } from '../../film2d/doodle/Sketch';
 import type { Keyer } from '../../film2d/Keyer';
 import { DOOR } from '../../film2d/props/Bedroom2D';
-import { cut, face, say, shake } from '../anhGiaDinh/scenes/helpers';
+import { cut, face, say } from '../anhGiaDinh/scenes/helpers';
 import { FEED, SCALE, VIT_BED, type TaoBonCast, type TaoBonScene } from './cast';
 
 /** Screen offset (px) that puts a shot's subject in the middle of the Reels safe zone. */
@@ -16,12 +16,11 @@ function frame(k: Keyer, t: number, cam: Camera2D, x: number, y: number, zoom: n
   cut(k, t, cam, x + SUBJECT.dx / zoom, y + SUBJECT.dy / zoom, zoom);
 }
 
-/** Crash zoom: a fast push-in (with a whoosh) onto a new framing. */
+/** Gentle push-in onto a new framing (no shake: the user wants a calm camera). */
 function crash(k: Keyer, cast: TaoBonCast, t: number, x: number, y: number, zoom: number): void {
   const { cam, cues } = cast;
-  k.to(t, t + 0.12, cam, { x: x + SUBJECT.dx / zoom, y: y + SUBJECT.dy / zoom, zoom }, 'outQuad');
-  cues.push({ id: 'sfx_charge', t: t - 0.05, duration: 0.2, volume: 0.35 });
-  shake(k, t + 0.12, cam, 10, 0.2);
+  k.to(t, t + 0.5, cam, { x: x + SUBJECT.dx / zoom, y: y + SUBJECT.dy / zoom, zoom }, 'inOutSine');
+  cues.push({ id: 'sfx_ting', t, volume: 0.3, pitch: 0.8 });
 }
 
 /** Táo's spot by the bed, facing Vịt. */
@@ -53,7 +52,7 @@ export const sceneTaoBon: TaoBonScene = {
 
     // ---- Initial state -------------------------------------------------------------------
     k.set(0, room, { door: 0 });
-    k.set(0, fx, { place: 0, burst: 1, burstTone: 0, bowl: 1, steam: 1, spoon: 0, reach: 0, target: FEED.vit, sick: 1, thermo: 1 });
+    k.set(0, fx, { place: 0, burst: 0, bowl: 1, steam: 1, spoon: 0, reach: 0, target: FEED.vit, sick: 1, thermo: 1 });
     k.set(0, vit, { x: VIT_BED.x, y: VIT_BED.y, scale: SCALE.vit, lookX: 0.4, bill: 0, sweat: 0 });
     face(k, 0, vit, 'squeeze', 'frown');
     k.set(0, tao, { x: TAO_SPOT.x, y: TAO_SPOT.y, scale: SCALE.tao, flip: -1, legs: 1, run: 0, arms: 1, armL: 1.0, armR: 0.6, lookX: 0, leaf: 0.2 });
@@ -73,7 +72,6 @@ export const sceneTaoBon: TaoBonScene = {
     texts.screen.push({ t0: 0.35, t1: 2.8, text: 'TÁO BÓN', x: 0.46, y: 0.245, size: 150, bounce: true, color: '#FF6B6B' });
     cues.push({ id: 'sfx_cop', t: 0.35, volume: 1 });
     cues.push({ id: 'sfx_boing', t: 0.38, volume: 0.6 });
-    shake(k, 0.35, cam, 16, 0.3);
     k.to(1.4, 2.0, tao, { sigh: 1 }, 'linear');
     k.set(2.0, tao, { sigh: 0 });
     cues.push({ id: 'sfx_haizz', t: 1.4, volume: 0.35 });
@@ -83,7 +81,7 @@ export const sceneTaoBon: TaoBonScene = {
 
     // ---- 2.8 - 6.5: Vịt sick in bed. Táo is not there yet. -------------------------------
     frame(k, 2.8, cam, WIDE.x, WIDE.y, WIDE.zoom);
-    k.set(2.8, fx, { burst: 0, bowl: 0 });
+    k.set(2.8, fx, { bowl: 0 });
     k.set(2.8, tao, { visible: 0, x: DOOR.x + 100 });
     k.to(2.8, 3.6, vit, { sweat: 1 }, 'linear');
     for (let i = 0; i < 4; i++) {
@@ -158,81 +156,70 @@ export const sceneTaoBon: TaoBonScene = {
     k.set(14.6, vit, { bill: 1 });
     face(k, 15.0, ga, 'shock', 'o');
     const gaFace: Pt = [DOOR.x + DOOR.w - 40, -110];
-    k.set(15.0, fx, { burst: 1, burstTone: 1 });
     crash(k, cast, 15.0, gaFace[0], gaFace[1], 2.4);
     texts.screen.push({ t0: 15.1, t1: 15.7, text: '!!', x: 0.7, y: 0.3, size: 140, color: '#FF6B6B' });
     cues.push({ id: 'sfx_trombone', t: 15.1, volume: 0.45 });
     k.to(15.0, 15.6, ga, { sweat: 1 }, 'linear');
     k.set(15.0, sau, { visible: 0 });
     k.set(15.6, sau, { visible: 1 });
-    k.set(15.6, fx, { burst: 0, dropped: 1 });
+    k.set(15.6, fx, { dropped: 1 });
     k.set(15.6, ga, { basket: 0 });
-    frame(k, 15.6, cam, WIDE.x, WIDE.y, WIDE.zoom);
     cues.push({ id: 'sfx_cop', t: 15.6, volume: 0.6 });
     k.set(15.6, ga, { flip: 1, walk: 1 });
-    k.to(15.6, 15.95, ga, { x: 900 }, 'inQuad');
-    texts.words.push({ t0: 15.65, t1: 16.0, text: 'VÚT!', x: 560, y: -300, size: 70 });
-    k.set(15.7, room, { door: 0.35 });
+    k.set(15.6, room, { door: 1 });
+    k.set(15.6, sau, { wiggle: 1, flip: -1 });
+    k.to(15.6, 18.3, sau, { x: -90 }, 'linear');
+    k.set(18.3, sau, { wiggle: 0 });
+    k.to(15.6, 16.2, ga, { x: 470 }, 'outQuad');
+    texts.words.push({ t0: 15.65, t1: 16.1, text: 'VÚT!', x: 330, y: -300, size: 64 });
 
-    // ---- 16.0 - 18.5: outside. "Trời ơi! Vịt bị táo bón kìa!!" ------------------------------
-    k.set(16.0, fx, { place: 1 });
-    frame(k, 16.0, cam, 0, -330, 1.0);
-    k.set(16.0, tao, { visible: 0 });
-    k.set(16.0, vit, { visible: 0 });
-    k.set(16.0, sau, { visible: 0 });
-    k.set(16.0, fx, { bowl: 0, spoon: 0, sick: 0 });
-    k.set(16.0, cho, { visible: 1, x: 170, flip: -1, walk: 0, lookX: 0.4 });
-    k.set(16.0, meo, { visible: 1, x: 380, flip: -1, walk: 0, lookX: 0.2 });
-    face(k, 16.0, cho, 'dot', 'smile');
-    face(k, 16.0, meo, 'dot', 'smile');
-    k.set(16.0, ga, { x: -700, flip: 1, walk: 1, sweat: 1 });
-    k.to(16.0, 16.45, ga, { x: -120 }, 'outQuad');
-    cues.push({ id: 'sfx_steps', t: 16.0, duration: 0.45, volume: 0.5 });
-    k.set(16.45, ga, { walk: 0 });
-    face(k, 16.45, ga, 'shock', 'o');
-    say(k, cast, ga, 'vit', 16.5, 18.4, 'Trời ơi!\nVịt bị táo bón kìa!!', { mouthOf: ga, dx: 150, dy: -170, size: 56, shout: true });
-    shake(k, 16.5, cam, 14, 0.4);
-    cues.push({ id: 'sfx_cop', t: 16.5, volume: 0.7, pitch: 1.4 });
-    k.to(16.5, 16.65, ga, { hop: 40 }, 'outQuad').to(16.65, 16.85, ga, { hop: 0 }, 'inQuad');
-    // Chó and Mèo: shocked double take, crash zoom on them.
-    face(k, 17.2, cho, 'shock', 'o');
-    face(k, 17.2, meo, 'shock', 'o');
-    k.set(17.2, cho, { sweat: 1, lookX: -0.5 });
-    k.set(17.2, meo, { sweat: 1, lookX: -0.5 });
-    k.to(17.2, 17.35, cho, { hop: 60 }, 'outQuad').to(17.35, 17.55, cho, { hop: 0 }, 'inQuad');
-    k.to(17.25, 17.4, meo, { hop: 70 }, 'outQuad').to(17.4, 17.6, meo, { hop: 0 }, 'inQuad');
-    crash(k, cast, 17.2, 275, -150, 1.6);
-    cues.push({ id: 'sfx_trombone', t: 17.3, volume: 0.35, pitch: 0.8 });
-    texts.words.push({ t0: 17.25, t1: 18.0, text: 'HẢ?!', x: 275, y: -420, size: 90, rot: 0.08 });
+    // ---- 15.6 - 18.5: in the hallway right outside the door (same set, the camera pans).
+    // Chó and Mèo are waiting there. "Trời ơi! Vịt bị táo bón kìa!!" -------------------------
+    const HALL = { x: 600, y: -150, zoom: 1.5 } as const;
+    k.to(15.6, 16.2, cam, { x: HALL.x + SUBJECT.dx / HALL.zoom, y: HALL.y + SUBJECT.dy / HALL.zoom, zoom: HALL.zoom }, 'inOutSine');
+    k.set(15.6, cho, { visible: 1, x: 590, flip: -1, walk: 0, lookX: 0.4 });
+    k.set(15.6, meo, { visible: 1, x: 720, flip: -1, walk: 0, lookX: 0.2 });
+    face(k, 15.6, cho, 'dot', 'smile');
+    face(k, 15.6, meo, 'dot', 'smile');
+    cues.push({ id: 'sfx_steps', t: 15.6, duration: 0.6, volume: 0.45 });
+    k.set(16.2, ga, { walk: 0, sweat: 1 });
+    face(k, 16.2, ga, 'shock', 'o');
+    say(k, cast, ga, 'vit', 16.3, 17.65, 'Trời ơi!\nVịt bị táo bón kìa!!', { mouthOf: ga, dx: 80, dy: -170, size: 54, shout: true });
+    cues.push({ id: 'sfx_cop', t: 16.3, volume: 0.5, pitch: 1.4 });
+    k.to(16.3, 16.45, ga, { hop: 30 }, 'outQuad').to(16.45, 16.65, ga, { hop: 0 }, 'inQuad');
+    // Chó and Mèo: shocked double take.
+    face(k, 17.6, cho, 'shock', 'o');
+    face(k, 17.6, meo, 'shock', 'o');
+    k.set(17.6, cho, { sweat: 1, lookX: -0.5 });
+    k.set(17.6, meo, { sweat: 1, lookX: -0.5 });
+    k.to(17.6, 17.75, cho, { hop: 45 }, 'outQuad').to(17.75, 17.95, cho, { hop: 0 }, 'inQuad');
+    k.to(17.65, 17.8, meo, { hop: 50 }, 'outQuad').to(17.8, 18.0, meo, { hop: 0 }, 'inQuad');
+    cues.push({ id: 'sfx_trombone', t: 17.7, volume: 0.35, pitch: 0.8 });
+    texts.words.push({ t0: 17.65, t1: 18.45, text: 'HẢ?!', x: 680, y: -260, size: 90, rot: 0.08 });
 
     // ---- 18.5 - 21.6: they burst in. Close on Táo: the wordplay. ---------------------------
-    k.set(18.5, fx, { place: 0, sick: 1, bowl: 1, spoon: 1, reach: 0 });
-    frame(k, 18.5, cam, WIDE.x, WIDE.y, WIDE.zoom);
+    k.set(18.5, fx, { reach: 0 });
+    k.to(18.4, 18.9, cam, { x: WIDE.x + SUBJECT.dx / WIDE.zoom, y: WIDE.y + SUBJECT.dy / WIDE.zoom, zoom: WIDE.zoom }, 'inOutSine');
     k.set(18.5, room, { door: 1 });
     k.set(18.5, tao, { visible: 1, armR: 1.35, lookX: 0 });
     k.set(18.5, vit, { visible: 1, bill: 0 });
     face(k, 18.5, vit, 'happy', 'smile');
-    k.set(18.5, sau, { visible: 1, x: -90 });
     const DOORWAY = [175, 280, 385] as const;
     for (const [who, x, i] of [[ga, DOORWAY[0], 0], [cho, DOORWAY[1], 1], [meo, DOORWAY[2], 2]] as const) {
-      k.set(18.5, who, { x: x + 240, flip: -1, walk: 1, sweat: 0, hop: 0 });
-      k.to(18.5, 18.8 + i * 0.05, who, { x }, 'outQuad');
-      k.set(18.85 + i * 0.05, who, { walk: 0 });
+      k.set(18.5, who, { flip: -1, walk: 1, sweat: 0, hop: 0 });
+      k.to(18.5, 19.0 + i * 0.1, who, { x }, 'outQuad');
+      k.set(19.05 + i * 0.1, who, { walk: 0 });
       face(k, 18.5, who, 'shock', 'o');
     }
-    cues.push({ id: 'sfx_cop', t: 18.55, volume: 0.9 });
-    texts.words.push({ t0: 18.55, t1: 19.0, text: 'RẦM!', x: DOOR.x + 120, y: -620, size: 80, rot: -0.08 });
-    shake(k, 18.55, cam, 16, 0.3);
+    cues.push({ id: 'sfx_steps', t: 18.5, duration: 0.5, volume: 0.45 });
     k.face(18.5, tao, 'half', 'flat');
-    // Close-up with the burst backdrop.
-    k.set(19.0, fx, { burst: 1, burstTone: 2 });
-    crash(k, cast, 19.0, fx0 - 20, fy0 + 20, TAO_CLOSE.zoom);
+    // Push in on Táo.
+    crash(k, cast, 19.1, fx0 - 20, fy0 + 20, TAO_CLOSE.zoom);
     say(k, cast, taoHead, 'tao', 19.15, 21.6, 'Vịt không BỊ Táo bón.\nVịt ĐƯỢC Táo bón.', { dx: 20, dy: -150, size: 52 });
     cues.push({ id: 'sfx_ting', t: 20.3, volume: 0.5 });
 
     // ---- 21.6 - 23.0: "..." and Vịt wants more. -------------------------------------------
-    k.set(21.6, fx, { burst: 0 });
-    frame(k, 21.6, cam, WIDE.x, WIDE.y, WIDE.zoom);
+        frame(k, 21.6, cam, WIDE.x, WIDE.y, WIDE.zoom);
     for (const who of [ga, cho, meo]) face(k, 21.6, who, 'dot', 'flat');
     say(k, cast, cho, 'none', 21.65, 22.5, '...', { dx: 0, dy: -110, size: 56 });
     cues.push({ id: 'sfx_crickets', t: 21.65, duration: 0.8, volume: 0.45 });
@@ -243,8 +230,8 @@ export const sceneTaoBon: TaoBonScene = {
     // ---- 23.0 - 26.5: they look at each other... "Tụi tớ cũng muốn được Táo bón!" -------------
     k.set(23.1, vit, { wing: 0 });
     frame(k, 23.5, cam, 310, -170, 1.7);
-    k.set(23.5, fx, { burst: 1, burstTone: 1, bowl: 0 });
-    k.set(26.5, fx, { burst: 0, bowl: 1 });
+    k.set(23.5, fx, { bowl: 0 });
+    k.set(26.5, fx, { bowl: 1 });
     k.set(23.1, ga, { lookX: 0.6 });
     k.set(23.1, meo, { lookX: -0.6 });
     k.set(23.5, ga, { lookX: -0.4 });
@@ -276,7 +263,6 @@ export const sceneTaoBon: TaoBonScene = {
     cues.push({ id: 'sfx_haizz', t: 26.6, volume: 0.45 });
     say(k, cast, taoHead, 'tao', 27.25, 29.3, 'Xếp hàng.', { dx: 20, dy: -130, size: 64 });
     cues.push({ id: 'sfx_cop', t: 27.25, volume: 0.6, pitch: 0.8 });
-    shake(k, 27.25, cam, 8, 0.2);
 
     // ---- 29.3 - 32.5: the queue. Táo feeds them one by one; Sâu last. Title. --------------
     frame(k, 29.3, cam, WIDE.x, WIDE.y, WIDE.zoom);
