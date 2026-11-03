@@ -20,14 +20,15 @@ Táo ít nói nhưng tốt bụng: tự nấu cháo, thổi nguội từng muỗ
 | 0:21.5-0:23 | Ba bạn: "..." (dế kêu). Vịt: "A~ nữa!" |
 | 0:23-0:26.5 | Gà, Chó, Mèo nhìn nhau rồi đồng thanh: "Tụi tớ cũng muốn được Táo bón!" |
 | 0:26.5-0:29.5 | Cận Táo, thở dài nhẹ: "Xếp hàng." (punchline) |
-| 0:29.5-0:32 | Toàn cảnh: Gà, Chó, Mèo xếp hàng há miệng "A~", cuối hàng là Sâu cũng há miệng "...". Táo đưa muỗng dài bón lần lượt (bóc, bóc, bóc). Chữ "TÁO Ờ · TÁO BÓN". |
+| 0:29.5-0:32.5 | Toàn cảnh: Gà, Chó, Mèo xếp hàng há miệng "A~", cuối hàng là Sâu cũng há miệng "...". Táo đưa muỗng dài bón lần lượt (bóc, bóc, bóc). Chữ "TÁO Ờ · TÁO BÓN". |
+| 0:32.5-0:34.2 | Chữ "HẾT" to nảy vào trước khi kết thúc clip. |
 
 ## Âm thanh
 
 - KHÔNG lồng tiếng (chị chốt 2026-11-03): chỉ bong bóng thoại, nhạc nền và tiếng động. Synth babble luôn tắt (`setBabble(false)`).
 - Bản 2 (chị góp ý 2026-11-03): cả clip ở trong phòng Vịt giống truyện (tường kem, sàn gỗ, giường chăn xanh, cửa vàng), không mở cảnh khác (bỏ nền tia `TaoBonFx.burst` và cảnh ngoài sân), máy quay êm (bỏ rung, zoom chậm). Giữ chữ tượng thanh (VÚT!, MĂM!, HẢ?!) và tiếng động.
 - Bản thu ElevenLabs đã lỡ tạo trước khi chị dặn (flow `1LITN00898ijedA94A3U`, 2 bản mỗi câu) để ở `assets/voice/tao-bon/` nếu sau này cần bản lồng tiếng.
-- Bản cuối: `/mnt/project-files/video/tao-tao-bon.mp4` (32,5 giây, khoảng -14 LUFS).
+- Bản cuối: `/mnt/project-files/video/tao-tao-bon.mp4` (34,2 giây, khoảng -14 LUFS).
 - Xuất lại:
   ```
   node scripts/build-preview.mjs tao-bon

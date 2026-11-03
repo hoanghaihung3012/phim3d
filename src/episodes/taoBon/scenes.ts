@@ -32,7 +32,7 @@ export const sceneTaoBon: TaoBonScene = {
   id: 'tao-bon',
   title: 'Táo bón',
   start: 0,
-  end: 32.5,
+  end: 34.2,
   build(k, cast) {
     const { tao, vit, sau, ga, cho, meo, room, cam, texts, cues, fx, hearts } = cast;
     const taoHead = { headTop: (): Pt => [tao.x, tao.y - tao.stemTipHeight() - 32] };
@@ -289,6 +289,11 @@ export const sceneTaoBon: TaoBonScene = {
     k.face(31.6, tao, 'half', 'smile');
     texts.screen.push({ t0: 30.3, t1: 32.5, text: 'TÁO Ờ · TÁO BÓN', x: 0.46, y: 0.19, size: 70, bounce: true });
     cues.push({ id: 'sfx_chime', t: 30.35, volume: 0.45 });
+
+    // ---- 32.5 - 34.2: end card "HẾT" (channel rule: every Reel ends with it). -------------
+    texts.screen.push({ t0: 32.5, t1: 34.2, text: 'HẾT', x: 0.46, y: 0.36, size: 170, bounce: true, color: '#FF6B6B' });
+    cues.push({ id: 'sfx_cop', t: 32.5, volume: 0.6 });
+    cues.push({ id: 'sfx_chime', t: 32.55, volume: 0.4, pitch: 0.8 });
   },
 };
 
