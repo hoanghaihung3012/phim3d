@@ -116,6 +116,15 @@ export class Apple2D {
       .scale(this.sx * (1 - 0.01 * breath), this.sy * (1 + 0.018 * breath));
   }
 
+  /** World position of a hand (side -1 = armL, 1 = armR), matching drawArms. */
+  handWorld(side: -1 | 1, t: number): Pt {
+    const ang = side < 0 ? this.armL + 0.05 * Math.sin(t * 1.7) : this.armR + 0.05 * Math.sin(t * 1.7 + 1);
+    const len = 82 + (side > 0 ? this.reachR : 0);
+    const sh: Pt = [side * R * 0.88, -R * 0.62];
+    const p = this.bodyMatrix(t).transformPoint(new DOMPoint(sh[0] + side * Math.sin(ang) * len, sh[1] + Math.cos(ang) * len));
+    return [p.x, p.y];
+  }
+
   /** World position of the mouth (balloon strings attach here). */
   mouthWorld(t: number): Pt {
     const p = this.bodyMatrix(t).transformPoint(new DOMPoint(this.lookX * 10, MOUTH_Y));
